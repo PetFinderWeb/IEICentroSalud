@@ -1,0 +1,32 @@
+from django.db import models
+
+# Create your models here.
+
+class Provincia(models.Model):
+    nombre = models.CharField(max_length=50)
+    codigo = models.PositiveSmallIntegerField(primary_key=True)
+
+class Localidad(models.Model):
+    nombre = models.CharField(max_length=50)
+    codigo = models.PositiveSmallIntegerField(primary_key=True)
+    en_provincia = models.ForeignKey(Provincia, on_delete=models.CASCADE)
+
+class Establecimiento_Sanitario(models.Model):
+    HOSPITAL = 'H'
+    CENTROSALUD = 'C'
+    OTROS = 'O'
+    TIPO = [
+        (HOSPITAL, 'Hospital'),
+        (CENTROSALUD, 'Centro de Salud'),
+        (OTROS, 'Otros'),
+    ]
+    nombre = models.CharField(max_length=50)
+    tipo = models.CharField(max_length=1, choices=TIPO, default=OTROS)
+    direccion = models.CharField(max_length = 100)
+    codigo_postal = models.PositiveIntegerField()
+    longitud= models.FloatField()
+    latitud = models.FloatField()
+    telefono = models.CharField(max_length=13)
+    descripcion = models.TextField()
+    # Relaciones
+    en_localidad = models.ForeignKey(Localidad, on_delete=models.CASCADE)
