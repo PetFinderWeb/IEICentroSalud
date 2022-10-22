@@ -6,10 +6,16 @@ class Provincia(models.Model):
     nombre = models.CharField(max_length=50)
     codigo = models.PositiveSmallIntegerField(primary_key=True)
 
+    def __str__(self):
+        return self.nombre
+
 class Localidad(models.Model):
     nombre = models.CharField(max_length=50)
     codigo = models.PositiveSmallIntegerField(primary_key=True)
     en_provincia = models.ForeignKey(Provincia, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.nombre
 
 class Establecimiento_Sanitario(models.Model):
     HOSPITAL = 'H'
@@ -27,6 +33,9 @@ class Establecimiento_Sanitario(models.Model):
     longitud= models.FloatField()
     latitud = models.FloatField()
     telefono = models.CharField(max_length=13)
-    descripcion = models.TextField()
+    descripcion = models.TextField(blank=True)
     # Relaciones
     en_localidad = models.ForeignKey(Localidad, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.nombre
