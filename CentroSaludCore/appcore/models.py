@@ -3,15 +3,15 @@ from django.db import models
 # Create your models here.
 
 class Provincia(models.Model):
-    nombre = models.CharField(max_length=50)
     codigo = models.PositiveIntegerField(primary_key=True)
+    nombre = models.CharField(max_length=100)
 
     def __str__(self):
         return self.nombre
 
 class Localidad(models.Model):
-    nombre = models.CharField(max_length=50)
     codigo = models.PositiveIntegerField(primary_key=True)
+    nombre = models.CharField(max_length=100)
     en_provincia = models.ForeignKey(Provincia, on_delete=models.CASCADE)
     
     def __str__(self):
@@ -26,9 +26,9 @@ class Establecimiento_Sanitario(models.Model):
         (CENTROSALUD, 'Centro de Salud'),
         (OTROS, 'Otros'),
     ]
-    nombre = models.CharField(max_length=50)
+    nombre = models.CharField(max_length=200)
     tipo = models.CharField(max_length=1, choices=TIPO, default=OTROS)
-    direccion = models.CharField(max_length = 100)
+    direccion = models.CharField(max_length = 150)
     codigo_postal = models.PositiveIntegerField()
     longitud= models.FloatField()
     latitud = models.FloatField()
