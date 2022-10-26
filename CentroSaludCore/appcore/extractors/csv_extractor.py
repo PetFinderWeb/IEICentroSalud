@@ -1,6 +1,11 @@
 
-from CentroSaludCore.settings import MEDIA_ROOT
-from ..models import Establecimiento_Sanitario, Provincia, Localidad
+import os
 
-def handle_file():
-    pass
+from CentroSaludCore.settings import MEDIA_ROOT
+
+from extractor import Extractor
+
+
+class CSV_Extractor(Extractor):
+    def abrir_fichero(self, path=os.path.join(MEDIA_ROOT, 'directorio-de-bibliotecas-valencianas_2020.csv')):
+        return open(path, mode='r')
