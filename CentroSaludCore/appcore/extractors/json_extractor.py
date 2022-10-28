@@ -31,6 +31,22 @@ class JSON_Extractor(Extractor):
     def map_tipo_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
         tipo = centro.get('Tipodecentro').strip().lowercase()
         if 'centro de salud' in tipo:
-            
+            return 'C'
+        if 'hospital' in tipo:
+            return 'H'
+        else:
+            return 'O'
+        
+    def map_direccion_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
+        return centro.get('Direccion').strip()
+    
+    def map_codigopostal_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
+        return centro.get('Codigopostal').strip()
+    
+    def map_latitud_establecimiento_sanitario(self, centro: Dict[str, Any]) -> float:
+        return float(centro.get('LATWGS84'))
+        
+    def map_longitud_establecimiento_sanitario(self, centro: Dict[str, Any]) -> float:
+        return float(centro.get('LONWGS84'))
     
     # ...
