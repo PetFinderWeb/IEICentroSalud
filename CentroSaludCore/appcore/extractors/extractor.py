@@ -5,8 +5,8 @@ from abc import ABC, abstractmethod
 
 class Extractor(ABC):
 
-    def extraer_de_fichero(self, ruta: str) -> None:
-        archivo = self.abrir_fichero(ruta)
+    def extraer_de_fichero(self) -> None:
+        archivo = self.abrir_fichero()
         datos = self.analizar_datos(archivo)
         self.guardar_datos(datos)
 

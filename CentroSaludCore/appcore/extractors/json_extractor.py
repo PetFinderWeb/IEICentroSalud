@@ -25,4 +25,12 @@ class JSON_Extractor(Extractor):
     def map_nombre_localidad(self, centro: Dict[str, Any]) -> str:
         return centro.get('Municipio').strip().title()
 
+    def map_nombre_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
+        return centro.get('Nombre')
+
+    def map_tipo_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
+        tipo = centro.get('Tipodecentro').strip().lowercase()
+        if 'centro de salud' in tipo:
+            
+    
     # ...
