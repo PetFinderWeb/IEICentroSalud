@@ -49,4 +49,3 @@ class JSON_Extractor(Extractor):
     def map_longitud_establecimiento_sanitario(self, centro: Dict[str, Any]) -> float:
         return float(centro.get('LONWGS84'))
     
-    # ...
