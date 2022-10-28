@@ -2,10 +2,11 @@
 import csv
 import os
 from typing import *
+# from CentroSaludCore.appcore.extractors.extractor import Extractor
 
 from CentroSaludCore.settings import MEDIA_ROOT
 
-from extractor import Extractor
+from appcore.extractors.extractor import Extractor
 
 
 class CSV_Extractor(Extractor):
@@ -13,4 +14,6 @@ class CSV_Extractor(Extractor):
         return open(path, mode='r')
 
     def analizar_datos(self, file: IO) -> List[Dict[str, Any]]:
-        return csv.DictReader(file, delimiter=';')
+        res = csv.DictReader(file, delimiter=';')
+        print(res)
+        return res
