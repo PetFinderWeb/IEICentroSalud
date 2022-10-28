@@ -2,9 +2,9 @@
 import os
 from typing import *
 from CentroSaludCore.settings import MEDIA_ROOT
-from extractor import Extractor
 import xml.etree.ElementTree as ET
 import xmltodict
+from appcore.extractors.extractor import Extractor
 import json
 
 
