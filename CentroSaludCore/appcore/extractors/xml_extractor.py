@@ -16,8 +16,8 @@ class XML_Extactor(Extractor):
         return open(path, mode='r')
 
     def analizar_datos(self, file: IO) -> List[Dict[str, Any]]:
-        xmldicc = xmltodict.parse(file)
-        xmlJson = json.dumps(xmldicc)   
+        xmldict = xmltodict.parse(file)
+        xmlJson = json.dumps(xmldict)   
 
 
 
