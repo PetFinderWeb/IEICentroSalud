@@ -10,9 +10,8 @@ import json
 
 class XML_Extactor(Extractor):
 
-    
-
-    def abrir_fichero(self, path: str = os.path.join(MEDIA_ROOT, 'biblioteques.xml')) -> IO:
+    def abrir_fichero(self) -> IO:
+        path = os.path.join(MEDIA_ROOT, 'biblioteques.xml')
         return open(path, mode='r')
 
     def analizar_datos(self, file: IO) -> List[Dict[str, Any]]:

@@ -10,26 +10,18 @@ from appcore.extractors.extractor import Extractor
 
 class JSON_Extractor(Extractor):
 
-    def abrir_fichero(self, path=os.path.join(MEDIA_ROOT, 'bibliotecas.json')):
+    def abrir_fichero(self):
+        path = os.path.join(MEDIA_ROOT, 'bibliotecas.json')
         return open(path, mode='r')
 
     def analizar_datos(self, file):
         return json.load(file)
     
-    def map_nombre_provincia(self, centro: Dict[str, Any]) -> str:
-        return centro.get('Provincia').strip().title()
-    
-    def map_codigo_provincia(self, centro: Dict[str, Any]) -> str:
-        return centro.get('Codigopostal')[0:2]
-    
-    def map_nombre_localidad(self, centro: Dict[str, Any]) -> str:
-        return centro.get('Municipio').strip().title()
-
     def map_nombre_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
         return centro.get('Nombre')
 
     def map_tipo_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
-        tipo = centro.get('Tipodecentro').strip().lowercase()
+        tipo = centro.get('Tipodecentro').strip().lower()
         if 'centro de salud' in tipo:
             return 'C'
         if 'hospital' in tipo:
@@ -48,4 +40,22 @@ class JSON_Extractor(Extractor):
         
     def map_longitud_establecimiento_sanitario(self, centro: Dict[str, Any]) -> float:
         return float(centro.get('LONWGS84'))
+    
+    def map_telefono_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
+        return centro.get('Telefono', '').strip().replace(',0', '').replace('.', '')
+
+    def map_descripcion_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
+        return ''
+    
+    def map_codigo_localidad(self, centro: Dict[str, Any]) -> str:
+        return centro.get('Codigopostal').strip()
+
+    def map_nombre_localidad(self, centro: Dict[str, Any]) -> str:
+        return centro.get('Municipio').strip().title()
+    
+    def map_codigo_provincia(self, centro: Dict[str, Any]) -> str:
+        return centro.get('Codigopostal')[0:2]
+    
+    def map_nombre_provincia(self, centro: Dict[str, Any]) -> str:
+        return centro.get('Provincia').strip().title()
     

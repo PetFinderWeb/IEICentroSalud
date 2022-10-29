@@ -10,7 +10,8 @@ from appcore.extractors.extractor import Extractor
 
 
 class CSV_Extractor(Extractor):
-    def abrir_fichero(self, path=os.path.join(MEDIA_ROOT, 'directorio-de-bibliotecas-valencianas_2020.csv')):
+    def abrir_fichero(self):
+        path = os.path.join(MEDIA_ROOT, 'directorio-de-bibliotecas-valencianas_2020.csv')
         print('hola')
         return open(path, mode='r')
 
