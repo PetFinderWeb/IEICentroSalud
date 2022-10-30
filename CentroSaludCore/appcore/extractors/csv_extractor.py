@@ -21,43 +21,44 @@ class CSV_Extractor(Extractor):
         datosDiccionario = csv.DictReader(file, delimiter=';')
         for row in datosDiccionario:
             jsonDatos.append(row)
-        with open(os.path.join(MEDIA_ROOT, 'DataExtractorCSV.json'), 'w', encoding='utf-8') as jsonf: 
-            jsonString = json.dumps(jsonDatos, indent=4, ensure_ascii=False)
-            print(jsonString[0])
-            jsonf.write(jsonString)
+        
+        # Crea el archivo json
+        # with open(os.path.join(MEDIA_ROOT, 'DataExtractorCSV.json'), 'w', encoding='utf-8') as jsonf: 
+        #     jsonString = json.dumps(jsonDatos, indent=4, ensure_ascii=False)
+        #     print(jsonString[0])
+        #     jsonf.write(jsonString)
         
         return jsonDatos
     
     def map_codigo_provincia(self, centro: Dict[str, Any]) -> str:
-        pass
+        return centro["Codi_província / Código_provincia"]
 
     
     def map_nombre_provincia(self, centro: Dict[str, Any]) -> str:
-        pass
+         return centro["Província / Provincia"]
 
     
     def map_codigo_localidad(self, centro: Dict[str, Any]) -> str:
-        pass
+        return "CV"+ centro["Codi_municipi / Código_municipio"]
 
     
     def map_nombre_localidad(self, centro: Dict[str, Any]) -> str:
-        pass
+         return centro["Municipi / Municipio"]
     
     
     def map_nombre_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
-        pass
+       return centro["Centre / Centro"]
 
     
     def map_tipo_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
-        pass
-
-    
+        return centro["Tipus_centre / Tipo_centro"]
+        
     def map_direccion_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
-        pass
+        return centro["Adreça / Dirección"]
 
     
     def map_codigopostal_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
-        pass
+          return centro["Codi_província / Código_provincia"] + centro["Codi_municipi / Código_municipio"]
 
     
     def map_longitud_establecimiento_sanitario(self, centro: Dict[str, Any]) -> float:
