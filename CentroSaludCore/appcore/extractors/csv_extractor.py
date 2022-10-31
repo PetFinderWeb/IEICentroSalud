@@ -27,7 +27,6 @@ class CSV_Extractor(Extractor):
         #     jsonString = json.dumps(jsonDatos, indent=4, ensure_ascii=False)
         #     print(jsonString[0])
         #     jsonf.write(jsonString)
-        
         return jsonDatos
     
     def map_codigo_provincia(self, centro: Dict[str, Any]) -> str:
@@ -40,7 +39,6 @@ class CSV_Extractor(Extractor):
     
     def map_codigo_localidad(self, centro: Dict[str, Any]) -> str:
         return "CV"+ centro["Codi_municipi / Código_municipio"]
-
     
     def map_nombre_localidad(self, centro: Dict[str, Any]) -> str:
          return centro["Municipi / Municipio"]
@@ -51,27 +49,38 @@ class CSV_Extractor(Extractor):
 
     
     def map_tipo_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
-        return centro["Tipus_centre / Tipo_centro"]
+        tipoCentro = centro["Tipus_centre / Tipo_centro"]
+        if tipoCentro == "CENTROS DE SALUD": # Añadir el resto de tipos de centros
+            res = "CENTRO DE SALUD"
+        elif tipoCentro == "HOSPITALES GENERALES": # Añadir el resto de tipos de centros
+            res = "HOSPITAL"
+        else:
+            res = "OTROS"
+        return res
+
         
     def map_direccion_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
         return centro["Adreça / Dirección"]
 
     
     def map_codigopostal_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
-          return centro["Codi_província / Código_provincia"] + centro["Codi_municipi / Código_municipio"]
+        # Obtener mediante Web Scrapping
+        return centro["Codi_província / Código_provincia"] + centro["Codi_municipi / Código_municipio"]
 
     
     def map_longitud_establecimiento_sanitario(self, centro: Dict[str, Any]) -> float:
-        pass
+        # Obtener mediante Web Scrapping
+        return 3.59876
 
     
     def map_latitud_establecimiento_sanitario(self, centro: Dict[str, Any]) -> float:
-        pass
+        # Obtener mediante Web Scrapping
+        return 43.59876
 
     
     def map_telefono_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
-        pass
+        return None
 
     
     def map_descripcion_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
-        pass
+        return centro["Tipus_centre / Tipo_centro"] + ' | ' + centro["Règim /Régimen"]

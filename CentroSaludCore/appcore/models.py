@@ -32,7 +32,7 @@ class Establecimiento_Sanitario(models.Model):
     codigo_postal = models.CharField(max_length=5)
     longitud= models.FloatField()
     latitud = models.FloatField()
-    telefono = models.CharField(max_length=13)
+    telefono = models.CharField(max_length=13, null=True)
     descripcion = models.TextField(blank=True)
     # Relaciones
     en_localidad = models.ForeignKey(Localidad, on_delete=models.CASCADE)
