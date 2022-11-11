@@ -11,16 +11,14 @@ import json
 
 class XML_Extactor(Extractor):
 
-
-    
-
     def abrir_fichero(self, path: str = os.path.join(MEDIA_ROOT, 'biblioteques.xml')) -> IO:
         return open(path, mode='r', encoding='utf-8')
 
     def analizar_datos(self, file: IO) -> List[Dict[str, Any]]:
-        xmldict = xmltodict.parse(file.read(), process_namespaces=True)
-        xmlJson = json.dumps(xmldict)
-        print(xmlJson)
+        xmldict = xmltodict.parse(file.read())
+        xmlJson = json.dumps(xmldict, ensure_ascii=False)
+        json_object = json.loads(xmlJson)
+        return json_object['response']['row']['row']
 
     
     def map_codigo_provincia(self, centro: Dict[str, Any]) -> str:
