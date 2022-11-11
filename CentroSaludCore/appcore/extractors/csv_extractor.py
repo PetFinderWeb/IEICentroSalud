@@ -50,9 +50,24 @@ class CSV_Extractor(Extractor):
     
     def map_tipo_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
         tipoCentro = centro["Tipus_centre / Tipo_centro"]
-        if tipoCentro == "CENTROS DE SALUD": # Añadir el resto de tipos de centros
+        tiposCentrosDeSalud = [
+            'CENTRO/SERVICIO DE URGENCIAS Y EMERGENCIAS',
+            'CENTROS DE CIRUGIA MAYOR AMBULATORIA',
+            'CENTROS DE ESPECIALIDADES',
+            'CENTROS DE SALUD', 
+            'CENTROS DE SALUD MENTAL',
+            'CENTROS POLIVALENTES',
+            'CONSULTORIOS DE ATENCIÓN PRIMARIA'
+        ]
+        tiposHospitales = [
+            'HOSPITALES DE SALUD MENTAL Y TRATAMIENTO DE TOXICOMANÍAS',
+            'HOSPITALES DE MEDIA Y LARGA ESTANCIA',
+            'HOSPITALES ESPECIALIZADOS',
+            'HOSPITALES GENERALES'
+        ]
+        if tipoCentro in tiposCentrosDeSalud: # Añadir el resto de tipos de centros
             res = "CENTRO DE SALUD"
-        elif tipoCentro == "HOSPITALES GENERALES": # Añadir el resto de tipos de centros
+        elif tipoCentro in tiposHospitales:
             res = "HOSPITAL"
         else:
             res = "OTROS"
@@ -79,7 +94,7 @@ class CSV_Extractor(Extractor):
 
     
     def map_telefono_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
-        return None
+        return None # No tenemos teléfono
 
     
     def map_descripcion_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
