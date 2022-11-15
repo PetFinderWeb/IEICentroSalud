@@ -22,51 +22,56 @@ class XML_Extactor(Extractor):
 
     
     def map_codigo_provincia(self, centro: Dict[str, Any]) -> str:
-        pass
+        return "07"
 
     
     def map_nombre_provincia(self, centro: Dict[str, Any]) -> str:
-        pass
+        return "Islas baleares"
 
     
     def map_codigo_localidad(self, centro: Dict[str, Any]) -> str:
-        pass
+        return "07" # web scrapping 
 
     
     def map_nombre_localidad(self, centro: Dict[str, Any]) -> str:
-        pass
+        return centro["municipi"] 
     
     
     def map_nombre_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
-        pass
+        return centro["nom"]
 
     
     def map_tipo_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
-        pass
+        tipoCentro = centro["funcio"]
+        if tipoCentro == "CENTRE SANITARI" or tipoCentro == "UNITAT BÀSICA" :
+            res = "CENTRO DE SALUD"
+        else:
+            res = "OTROS"
+        return res
 
     
     def map_direccion_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
-        pass
+        return centro["adreca"]
 
     
     def map_codigopostal_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
-        pass
+        return "000"  # web scrapping
 
     
     def map_longitud_establecimiento_sanitario(self, centro: Dict[str, Any]) -> float:
-        pass
+        return centro["long"]
 
     
     def map_latitud_establecimiento_sanitario(self, centro: Dict[str, Any]) -> float:
-        pass
+        return centro["lat"]
 
     
     def map_telefono_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
-        pass
+        return None
 
     
     def map_descripcion_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
-        pass
+        return None
 
     # with open(os.path.join(MEDIA_ROOT, 'biblioteques.xml')) as fd:
     #     doc = xmltodict.parse(fd.read())
