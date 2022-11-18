@@ -4,7 +4,6 @@ from typing import *
 from CentroSaludCore.settings import MEDIA_ROOT
 import xml.etree.ElementTree as ET
 import xmltodict
-import pprint
 from appcore.extractors.extractor import Extractor
 import json
 
@@ -30,7 +29,7 @@ class XML_Extactor(Extractor):
 
     
     def map_codigo_localidad(self, centro: Dict[str, Any]) -> str:
-        return "07" # web scrapping 
+        return "000" # web scrapping 
 
     
     def map_nombre_localidad(self, centro: Dict[str, Any]) -> str:
@@ -72,11 +71,3 @@ class XML_Extactor(Extractor):
     
     def map_descripcion_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
         return None
-
-    # with open(os.path.join(MEDIA_ROOT, 'biblioteques.xml')) as fd:
-    #     doc = xmltodict.parse(fd.read())
-
-    # pp = pprint.PrettyPrinter(indent=4)
-    # pp.pprint(json.dumps(doc))
-
-    # print(pp)
