@@ -1,6 +1,8 @@
 
+import codecs
 import csv
 import os
+import json
 from typing import *
 # from CentroSaludCore.appcore.extractors.extractor import Extractor
 
@@ -10,59 +12,74 @@ from appcore.extractors.extractor import Extractor
 
 
 class CSV_Extractor(Extractor):
-    def abrir_fichero(self):
-        path = os.path.join(MEDIA_ROOT, 'directorio-de-bibliotecas-valencianas_2020.csv')
-        print('hola')
-        return open(path, mode='r')
+    def abrir_fichero(self, ruta=os.path.join(MEDIA_ROOT, 'directorio-de-bibliotecas-valencianas_2020.csv')):
+        return open(ruta, mode='r')
 
     def analizar_datos(self, file: IO) -> List[Dict[str, Any]]:
-        res = csv.DictReader(file, delimiter=';')
-        print(res)
-        return res
-    
+        jsonDatos = []
+        # CSV to JSON
+        datosDiccionario = csv.DictReader(file, delimiter=';')
+        for row in datosDiccionario:
+            jsonDatos.append(row)
+        return jsonDatos
+
     def map_codigo_provincia(self, centro: Dict[str, Any]) -> str:
-        pass
+        return centro["Codi_província / Código_provincia"]
 
-    
     def map_nombre_provincia(self, centro: Dict[str, Any]) -> str:
-        pass
+        return centro["Província / Provincia"]
 
-    
     def map_codigo_localidad(self, centro: Dict[str, Any]) -> str:
-        pass
+        return "CV" + centro["Codi_municipi / Código_municipio"]
 
-    
     def map_nombre_localidad(self, centro: Dict[str, Any]) -> str:
-        pass
-    
-    
+        return centro["Municipi / Municipio"]
+
     def map_nombre_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
-        pass
+        return centro["Centre / Centro"]
 
-    
     def map_tipo_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
-        pass
+        tipoCentro = centro["Tipus_centre / Tipo_centro"]
+        tiposCentrosDeSalud = [
+            'CENTRO/SERVICIO DE URGENCIAS Y EMERGENCIAS',
+            'CENTROS DE CIRUGIA MAYOR AMBULATORIA',
+            'CENTROS DE ESPECIALIDADES',
+            'CENTROS DE SALUD',
+            'CENTROS DE SALUD MENTAL',
+            'CENTROS POLIVALENTES',
+            'CONSULTORIOS DE ATENCIÓN PRIMARIA'
+        ]
+        tiposHospitales = [
+            'HOSPITALES DE SALUD MENTAL Y TRATAMIENTO DE TOXICOMANÍAS',
+            'HOSPITALES DE MEDIA Y LARGA ESTANCIA',
+            'HOSPITALES ESPECIALIZADOS',
+            'HOSPITALES GENERALES'
+        ]
+        if tipoCentro in tiposCentrosDeSalud:  # Añadir el resto de tipos de centros
+            res = "CENTRO DE SALUD"
+        elif tipoCentro in tiposHospitales:
+            res = "HOSPITAL"
+        else:
+            res = "OTROS"
+        return res
 
-    
     def map_direccion_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
-        pass
+        return centro["Adreça / Dirección"]
 
-    
     def map_codigopostal_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
-        pass
+        # Obtener mediante Web Scrapping
+        return centro["Codi_província / Código_provincia"] + centro["Codi_municipi / Código_municipio"]
 
-    
     def map_longitud_establecimiento_sanitario(self, centro: Dict[str, Any]) -> float:
-        pass
+        # Obtener mediante Web Scrapping
+        return 3.59876
 
-    
     def map_latitud_establecimiento_sanitario(self, centro: Dict[str, Any]) -> float:
-        pass
+        # Obtener mediante Web Scrapping
+        return 43.59876
 
-    
     def map_telefono_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
-        pass
+        return None  # No tenemos teléfono
 
-    
     def map_descripcion_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
-        pass
+        return centro["Tipus_centre / Tipo_centro"] + ' | ' + centro["Règim /Régimen"]
