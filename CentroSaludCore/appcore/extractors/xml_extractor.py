@@ -66,8 +66,8 @@ class XML_Extactor(Extractor):
 
     
     def map_telefono_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
-        return None
+        return "None"
 
     
     def map_descripcion_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
-        return None
+        return "None"
