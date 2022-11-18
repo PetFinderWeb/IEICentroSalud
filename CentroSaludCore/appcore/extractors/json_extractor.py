@@ -45,7 +45,7 @@ class JSON_Extractor(Extractor):
         return centro.get('Telefono', '').strip().replace(',0', '').replace('.', '')
 
     def map_descripcion_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
-        return ''
+        return centro.get('HorarioatencionCiudadana').strip()
     
     def map_codigo_localidad(self, centro: Dict[str, Any]) -> str:
         return centro.get('Codigopostal').strip()
