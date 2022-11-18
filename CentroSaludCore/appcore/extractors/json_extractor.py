@@ -49,7 +49,7 @@ class JSON_Extractor(Extractor):
         if horario is not None: 
             return horario
         else:
-            return ''
+            return 'Horario no disponible'
 
     
     def map_codigo_localidad(self, centro: Dict[str, Any]) -> str:
