@@ -22,21 +22,20 @@ class WebScrapper():
         time.sleep(3)
         self.addressInput = self.driver.find_element(By.ID, "address")
         self.getCoordinatesButton = self.driver.find_element(
-            By.XPATH, '//button[text()="Obtener Coordenadas GPS"]')
+            By.XPATH, "//button[normalize-space()='Obtener Coordenadas GPS']")
         self.getDirectionButton = self.driver.find_element(
-            By.XPATH, '//button[text()="Obtener Dirección"]')
+            By.XPATH, '//form[2]//div[3]//div[1]//button[1]')
         self.latitudeInput = self.driver.find_element(By.ID, "latitude")
         self.longitudeInput = self.driver.find_element(By.ID, "longitude")
-
     ''' Método utilizado para obtener latitud, longitud y código postal a partir de una dirección'''
 
     def searchByAddress(self, medicalCenterAddress: str):
         self.addressInput.clear()
         self.addressInput.send_keys(medicalCenterAddress)
-        self.addressInput.send_keys(Keys.RETURN)
+        # self.addressInput.send_keys(Keys.RETURN)
         latitude = self.latitudeInput.get_attribute('value')
         longitude = self.longitudeInput.get_attribute('value')
-        self.getCoordinatesButton.click()
+        self.driver.execute_script("arguments[0].click();", self.getCoordinatesButton)
         # Esperar hasta que se actualice latitud y longitud
         while (latitude == self.latitudeInput.get_attribute('value') or longitude == self.longitudeInput.get_attribute('value')):
             time.sleep(0.2)
@@ -45,7 +44,7 @@ class WebScrapper():
         address = self.addressInput.get_attribute('value')
         postalCode = re.findall(r'\d+', address)
         if (len(postalCode) == 0):
-            self.getDirectionButton.click()
+            self.driver.execute_script("arguments[0].click();", self.getDirectionButton)
             while (address == self.addressInput.get_attribute('value')):
                 time.sleep(0.2)
             address = self.addressInput.get_attribute('value')
@@ -55,10 +54,14 @@ class WebScrapper():
         else:
             postalCode = postalCode[0]            
         
-        print(medicalCenterAddress + '. Latitud: ' + latitude +
-              '. Longitud: ' + longitude + '. Código postal: ' + postalCode)
+        if(postalCode == None):
+            print(medicalCenterAddress + '. Latitud: ' + latitude +
+              '. Longitud: ' + longitude + '. Código postal no encontrado ')
+        else:
+            print(medicalCenterAddress + '. Latitud: ' + latitude +
+              '. Longitud: ' + longitude + '. Código postal:' + postalCode )
+    
         return (latitude, longitude, postalCode[0])
 
-
-webScrapper = WebScrapper()
-webScrapper.searchByAddress('godella')
+# webScrapper = WebScrapper()
+#webScrapper.searchByAddress('godella')

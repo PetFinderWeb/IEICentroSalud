@@ -10,8 +10,12 @@ from CentroSaludCore.settings import MEDIA_ROOT
 
 from appcore.extractors.extractor import Extractor
 
+from appcore.webScrapper.webScrapper import WebScrapper
 
 class CSV_Extractor(Extractor):
+    def __init__(self):
+            self.webScrapper = WebScrapper()
+
     def abrir_fichero(self, ruta=os.path.join(MEDIA_ROOT, 'directorio-de-bibliotecas-valencianas_2020.csv')):
         return open(ruta, mode='r')
 
@@ -68,15 +72,16 @@ class CSV_Extractor(Extractor):
 
     def map_codigopostal_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
         # Obtener mediante Web Scrapping
-        return centro["Codi_província / Código_provincia"] + centro["Codi_municipi / Código_municipio"]
+        self.latlangcode = self.webScrapper.searchByAddress(centro["Adreça / Dirección"] + " , " + centro["Municipi / Municipio"])
+        return self.latlangcode[2]
 
     def map_longitud_establecimiento_sanitario(self, centro: Dict[str, Any]) -> float:
         # Obtener mediante Web Scrapping
-        return 3.59876
+        return self.latlangcode[1]
 
     def map_latitud_establecimiento_sanitario(self, centro: Dict[str, Any]) -> float:
         # Obtener mediante Web Scrapping
-        return 43.59876
+        return self.latlangcode[0]
 
     def map_telefono_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
         return None  # No tenemos teléfono

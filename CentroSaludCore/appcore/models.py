@@ -29,7 +29,7 @@ class Establecimiento_Sanitario(models.Model):
     nombre = models.CharField(max_length=200)
     tipo = models.CharField(max_length=1, choices=TIPO, default=OTROS)
     direccion = models.CharField(max_length = 150)
-    codigo_postal = models.CharField(max_length=5)
+    codigo_postal = models.CharField(max_length=5 , null = True)
     longitud= models.FloatField()
     latitud = models.FloatField()
     telefono = models.CharField(max_length=13, null=True)
