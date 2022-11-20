@@ -73,7 +73,10 @@ class CSV_Extractor(Extractor):
     def map_codigopostal_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
         # Obtener mediante Web Scrapping
         self.latlangcode = self.webScrapper.searchByAddress(centro["Adreça / Dirección"] + " , " + centro["Municipi / Municipio"])
-        return self.latlangcode[2]
+        if (self.latlangcode[2] == None): 
+            return None
+        else:
+            return self.latlangcode[2]
 
     def map_longitud_establecimiento_sanitario(self, centro: Dict[str, Any]) -> float:
         # Obtener mediante Web Scrapping

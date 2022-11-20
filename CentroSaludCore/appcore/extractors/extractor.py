@@ -63,6 +63,7 @@ class Extractor(ABC):
             descripcion = self.map_descripcion_establecimiento_sanitario(centro),
             en_localidad = localidad
         )
+        print(centro)
         centro.save()
 
     @abstractmethod

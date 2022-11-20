@@ -57,11 +57,11 @@ class WebScrapper():
         if(postalCode == None):
             print(medicalCenterAddress + '. Latitud: ' + latitude +
               '. Longitud: ' + longitude + '. Código postal no encontrado ')
+            return (latitude, longitude, None)
         else:
             print(medicalCenterAddress + '. Latitud: ' + latitude +
               '. Longitud: ' + longitude + '. Código postal:' + postalCode )
-    
-        return (latitude, longitude, postalCode[0])
+            return (latitude, longitude, postalCode[0])
 
 # webScrapper = WebScrapper()
 #webScrapper.searchByAddress('godella')
