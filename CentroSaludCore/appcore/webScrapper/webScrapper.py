@@ -30,38 +30,47 @@ class WebScrapper():
     ''' Método utilizado para obtener latitud, longitud y código postal a partir de una dirección'''
 
     def searchByAddress(self, medicalCenterAddress: str):
-        self.addressInput.clear()
-        self.addressInput.send_keys(medicalCenterAddress)
-        # self.addressInput.send_keys(Keys.RETURN)
-        latitude = self.latitudeInput.get_attribute('value')
-        longitude = self.longitudeInput.get_attribute('value')
-        self.driver.execute_script("arguments[0].click();", self.getCoordinatesButton)
-        # Esperar hasta que se actualice latitud y longitud
-        while (latitude == self.latitudeInput.get_attribute('value') or longitude == self.longitudeInput.get_attribute('value')):
-            time.sleep(0.2)
-        latitude = self.latitudeInput.get_attribute('value')
-        longitude = self.longitudeInput.get_attribute('value')
-        address = self.addressInput.get_attribute('value')
-        postalCode = re.findall(r'\d+', address)
-        if (len(postalCode) == 0):
-            self.driver.execute_script("arguments[0].click();", self.getDirectionButton)
-            while (address == self.addressInput.get_attribute('value')):
-                time.sleep(0.2)
+        try:
+            self.addressInput.clear()
+            self.addressInput.send_keys(medicalCenterAddress)
+            latitude = self.latitudeInput.get_attribute('value')
+            longitude = self.longitudeInput.get_attribute('value')
+            self.driver.execute_script(
+                "arguments[0].click();", self.getCoordinatesButton)
+            timeToLiveWhile = 0
+            # Esperar hasta que se actualice latitud y longitud. Ponemos un límite de 10 iteraciones en el bucle. Hay ocasiones en las que la latitud y longitud no cambia porque se ha preguntado por el mismo municipio
+            while (latitude == self.latitudeInput.get_attribute('value') and longitude == self.longitudeInput.get_attribute('value') and timeToLiveWhile < 10):
+                time.sleep(0.15)
+                timeToLiveWhile = timeToLiveWhile + 1
+            latitude = self.latitudeInput.get_attribute('value')
+            longitude = self.longitudeInput.get_attribute('value')
             address = self.addressInput.get_attribute('value')
-            postalCode = re.findall(r'\d+', address)   
-        if (len(postalCode) == 0):
-            postalCode = None
-        else:
-            postalCode = postalCode[0]            
-        
-        if(postalCode == None):
-            print(medicalCenterAddress + '. Latitud: ' + latitude +
-              '. Longitud: ' + longitude + '. Código postal no encontrado ')
-            return (latitude, longitude, None)
-        else:
-            print(medicalCenterAddress + '. Latitud: ' + latitude +
-              '. Longitud: ' + longitude + '. Código postal:' + postalCode )
-            return (latitude, longitude, postalCode[0])
+            print('address is ' + address)
+            postalCode = re.findall(r'\d+', address)
+            if (len(postalCode) == 0):
+                timeToLiveWhile = 0
+                self.driver.execute_script(
+                    "arguments[0].click();", self.getDirectionButton)
+                # Esperamos hasta que cambie la dirección (para obtener postal code). Ponemos un límite de 10 iteraciones en el bucle. Hay ocasiones en las que address no cambia porque se ha preguntado por el mismo municipio
+                while (address == self.addressInput.get_attribute('value') and timeToLiveWhile < 10):
+                    timeToLiveWhile = timeToLiveWhile + 1
+                    time.sleep(0.15)
+                address = self.addressInput.get_attribute('value')
+                postalCode = re.findall(r'\d+', address)
 
-# webScrapper = WebScrapper()
-#webScrapper.searchByAddress('godella')
+            if (len(postalCode) == 0):
+                postalCode = None
+            else:
+                postalCode = postalCode[0]
+
+            if (postalCode == None):
+                print(medicalCenterAddress + '. Latitud: ' + latitude +
+                      '. Longitud: ' + longitude + '. Código postal no encontrado ')
+                return (latitude, longitude, None)
+            else:
+                print(medicalCenterAddress + '. Latitud: ' + latitude +
+                      '. Longitud: ' + longitude + '. Código postal:' + postalCode)
+            return (latitude, longitude, postalCode[0])
+        except:
+            print('Aceptando alert. No se ha encontrado')
+            return (0, 0, None)
