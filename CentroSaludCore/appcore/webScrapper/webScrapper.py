@@ -70,7 +70,7 @@ class WebScrapper():
                 timeToLiveWhile = timeToLiveWhile + 1
                 time.sleep(0.2)
             address = self.addressInput.get_attribute('value')
-            postalCode = re.findall(r'\d+', address)
+            postalCode = re.search(r'\d{5}', address)
             if (len(postalCode) == 0):
                 return None
             else:
