@@ -20,14 +20,8 @@ class XML_Extactor(Extractor):
         json_object = json.loads(xmlJson)
         return json_object['response']['row']['row']
 
-    def map_codigo_provincia(self, centro: Dict[str, Any]) -> str:
-        return "07"
-
     def map_nombre_provincia(self, centro: Dict[str, Any]) -> str:
         return "Islas baleares"
-
-    def map_codigo_localidad(self, centro: Dict[str, Any]) -> str:
-        return ""
 
     def map_nombre_localidad(self, centro: Dict[str, Any]) -> str:
         return centro["municipi"]
