@@ -1,7 +1,6 @@
 import json
 import os
 from typing import *
-
 from CentroSaludCore.settings import MEDIA_ROOT
 
 from appcore.extractors.extractor import Extractor
@@ -12,11 +11,11 @@ class JSON_Extractor(Extractor):
 
     def abrir_fichero(self):
         path = os.path.join(MEDIA_ROOT, 'bibliotecas.json')
-        return open(path, mode='r')
+        return open(path, mode='r', encoding="utf8")
 
     def analizar_datos(self, file):
         return json.load(file)
-    
+
     def map_nombre_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
         return centro.get('Nombre')
 
@@ -45,17 +44,14 @@ class JSON_Extractor(Extractor):
         return centro.get('Telefono', '').strip().replace(',0', '').replace('.', '')
 
     def map_descripcion_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
-        return ''
-    
-    def map_codigo_localidad(self, centro: Dict[str, Any]) -> str:
-        return centro.get('Codigopostal').strip()
+        horario = centro.get('HorarioatencionCiudadana')
+        if horario is not None: 
+            return horario
+        else:
+            return 'Horario no disponible'
 
     def map_nombre_localidad(self, centro: Dict[str, Any]) -> str:
         return centro.get('Municipio').strip().title()
     
-    def map_codigo_provincia(self, centro: Dict[str, Any]) -> str:
-        return centro.get('Codigopostal')[0:2]
-    
     def map_nombre_provincia(self, centro: Dict[str, Any]) -> str:
         return centro.get('Provincia').strip().title()
-    

@@ -3,14 +3,12 @@ from django.db import models
 # Create your models here.
 
 class Provincia(models.Model):
-    codigo = models.CharField(max_length=2, primary_key=True)
     nombre = models.CharField(max_length=100)
 
     def __str__(self):
         return self.nombre
 
 class Localidad(models.Model):
-    codigo = models.CharField(max_length=5, primary_key=True)
     nombre = models.CharField(max_length=100)
     en_provincia = models.ForeignKey(Provincia, on_delete=models.CASCADE)
     
