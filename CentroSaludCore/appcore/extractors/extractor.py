@@ -3,6 +3,7 @@ from typing import *
 from ..models import Establecimiento_Sanitario, Provincia, Localidad
 from abc import ABC, abstractmethod
 
+
 class Extractor(ABC):
 
     def extraer_de_fichero(self) -> None:
@@ -27,12 +28,12 @@ class Extractor(ABC):
     def get_save_provincia(self, centro: Dict[str, Any]) -> Provincia:
         try:
             provincia = Provincia.objects.get(
-                codigo__exact = self.map_codigo_provincia(centro)
+                codigo__exact=self.map_codigo_provincia(centro)
             )
         except Provincia.DoesNotExist:
             provincia = Provincia(
-                nombre = self.map_nombre_provincia(centro),
-                codigo = self.map_codigo_provincia(centro),
+                nombre=self.map_nombre_provincia(centro),
+                codigo=self.map_codigo_provincia(centro),
             )
             provincia.save()
         return provincia
@@ -40,28 +41,29 @@ class Extractor(ABC):
     def get_save_localidad(self, centro: Dict[str, Any], provincia: Provincia) -> Localidad:
         try:
             localidad = Localidad.objects.get(
-                codigo__exact = self.map_codigo_localidad(centro),
+                codigo__exact=self.map_codigo_localidad(centro),
             )
         except Localidad.DoesNotExist:
             localidad = Localidad(
-                nombre = self.map_nombre_localidad(centro),
-                codigo = self.map_codigo_localidad(centro),
-                en_provincia = provincia,
+                nombre=self.map_nombre_localidad(centro),
+                codigo=self.map_codigo_localidad(centro),
+                en_provincia=provincia,
             )
             localidad.save()
         return localidad
 
     def create_save_establecimiento_sanitario(self, centro: Dict[str, Any], localidad: Localidad):
         centro = Establecimiento_Sanitario(
-            nombre = self.map_nombre_establecimiento_sanitario(centro),
-            tipo = self.map_tipo_establecimiento_sanitario(centro),
-            direccion = self.map_direccion_establecimiento_sanitario(centro),
-            codigo_postal = self.map_codigopostal_establecimiento_sanitario(centro),
-            longitud = self.map_longitud_establecimiento_sanitario(centro),
-            latitud = self.map_latitud_establecimiento_sanitario(centro),
-            telefono = self.map_telefono_establecimiento_sanitario(centro),
-            descripcion = self.map_descripcion_establecimiento_sanitario(centro),
-            en_localidad = localidad
+            nombre=self.map_nombre_establecimiento_sanitario(centro),
+            tipo=self.map_tipo_establecimiento_sanitario(centro),
+            direccion=self.map_direccion_establecimiento_sanitario(centro),
+            longitud=self.map_longitud_establecimiento_sanitario(centro),
+            latitud=self.map_latitud_establecimiento_sanitario(centro),
+            codigo_postal=self.map_codigopostal_establecimiento_sanitario(
+                centro),
+            telefono=self.map_telefono_establecimiento_sanitario(centro),
+            descripcion=self.map_descripcion_establecimiento_sanitario(centro),
+            en_localidad=localidad
         )
         print(centro)
         centro.save()
@@ -81,7 +83,7 @@ class Extractor(ABC):
     @abstractmethod
     def map_nombre_localidad(self, centro: Dict[str, Any]) -> str:
         pass
-    
+
     @abstractmethod
     def map_nombre_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
         pass

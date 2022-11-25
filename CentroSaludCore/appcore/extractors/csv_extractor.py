@@ -12,9 +12,12 @@ from appcore.extractors.extractor import Extractor
 
 from appcore.webScrapper.webScrapper import WebScrapper
 
+
 class CSV_Extractor(Extractor):
+    webScrapper: WebScrapper
+
     def __init__(self):
-            self.webScrapper = WebScrapper()
+        self.webScrapper = WebScrapper()
 
     def abrir_fichero(self, ruta=os.path.join(MEDIA_ROOT, 'directorio-de-bibliotecas-valencianas_2020.csv')):
         return open(ruta, mode='r')
@@ -72,19 +75,22 @@ class CSV_Extractor(Extractor):
 
     def map_codigopostal_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
         # Obtener mediante Web Scrapping
-        self.latlangcode = self.webScrapper.searchByAddress(centro["Adreça / Dirección"] + " , " + centro["Municipi / Municipio"] + ', ESPAÑA')
-        if (self.latlangcode[2] == None): 
+        postalCode = self.webScrapper.searchByCoordinates(
+            self.latlang[0], self.latlang[1])
+        if (postalCode == None):
             return None
         else:
-            return self.latlangcode[2]
+            return postalCode
 
     def map_longitud_establecimiento_sanitario(self, centro: Dict[str, Any]) -> float:
         # Obtener mediante Web Scrapping
-        return self.latlangcode[1]
+        self.latlang = WebScrapper.searchByAddress(
+            centro["Adreça / Dirección"] + " , " + centro["Municipi / Municipio"] + ', ESPAÑA')
+        return self.latlang[1]
 
     def map_latitud_establecimiento_sanitario(self, centro: Dict[str, Any]) -> float:
         # Obtener mediante Web Scrapping
-        return self.latlangcode[0]
+        return self.latlang[0]
 
     def map_telefono_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
         return None  # No tenemos teléfono
