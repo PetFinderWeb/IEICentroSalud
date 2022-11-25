@@ -1,7 +1,6 @@
 import json
 import os
 from typing import *
-
 from CentroSaludCore.settings import MEDIA_ROOT
 
 from appcore.extractors.extractor import Extractor
@@ -51,15 +50,8 @@ class JSON_Extractor(Extractor):
         else:
             return 'Horario no disponible'
 
-    
-    def map_codigo_localidad(self, centro: Dict[str, Any]) -> str:
-        return centro.get('Codigopostal').strip()
-
     def map_nombre_localidad(self, centro: Dict[str, Any]) -> str:
         return centro.get('Municipio').strip().title()
-    
-    def map_codigo_provincia(self, centro: Dict[str, Any]) -> str:
-        return centro.get('Codigopostal')[0:2]
     
     def map_nombre_provincia(self, centro: Dict[str, Any]) -> str:
         return centro.get('Provincia').strip().title()
