@@ -11,7 +11,11 @@ from appcore.webScrapper.webScrapper import WebScrapper
 class XML_Extactor(Extractor):
     webScrapper: WebScrapper
 
-    def abrir_fichero(self, path: str = os.path.join(MEDIA_ROOT, 'biblioteques.xml')) -> IO:
+    def __init__(self):
+        self.webScrapper = WebScrapper()
+
+    def abrir_fichero(self) -> IO:
+        path = os.path.join(MEDIA_ROOT, 'biblioteques.xml')
         return open(path, mode='r', encoding='utf-8')
 
     def analizar_datos(self, file: IO) -> List[Dict[str, Any]]:
@@ -42,7 +46,7 @@ class XML_Extactor(Extractor):
 
     def map_codigopostal_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
         self.latlangcode = self.webScrapper.searchByCoordinates(
-            self, centro["lat"], centro["long"])
+            centro["lat"], centro["long"])
         if (self.latlangcode == None):
             return None
         else:
@@ -55,7 +59,7 @@ class XML_Extactor(Extractor):
         return centro["lat"]
 
     def map_telefono_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
-        return None
+        return "None"
 
     def map_descripcion_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
-        return None
+        return "None"
