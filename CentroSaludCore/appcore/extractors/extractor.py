@@ -10,6 +10,7 @@ class Extractor(ABC):
         archivo = self.abrir_fichero()
         datos = self.analizar_datos(archivo)
         self.guardar_datos(datos)
+        archivo.close()
 
     @abstractmethod
     def abrir_fichero(self, ruta: str) -> IO:
@@ -28,12 +29,11 @@ class Extractor(ABC):
     def get_save_provincia(self, centro: Dict[str, Any]) -> Provincia:
         try:
             provincia = Provincia.objects.get(
-                codigo__exact=self.map_codigo_provincia(centro)
+                nombre__exact=self.map_nombre_provincia(centro)
             )
         except Provincia.DoesNotExist:
             provincia = Provincia(
                 nombre=self.map_nombre_provincia(centro),
-                codigo=self.map_codigo_provincia(centro),
             )
             provincia.save()
         return provincia
@@ -41,12 +41,11 @@ class Extractor(ABC):
     def get_save_localidad(self, centro: Dict[str, Any], provincia: Provincia) -> Localidad:
         try:
             localidad = Localidad.objects.get(
-                codigo__exact=self.map_codigo_localidad(centro),
+                nombre__exact=self.map_nombre_localidad(centro),
             )
         except Localidad.DoesNotExist:
             localidad = Localidad(
                 nombre=self.map_nombre_localidad(centro),
-                codigo=self.map_codigo_localidad(centro),
                 en_provincia=provincia,
             )
             localidad.save()
@@ -69,15 +68,7 @@ class Extractor(ABC):
         centro.save()
 
     @abstractmethod
-    def map_codigo_provincia(self, centro: Dict[str, Any]) -> str:
-        pass
-
-    @abstractmethod
     def map_nombre_provincia(self, centro: Dict[str, Any]) -> str:
-        pass
-
-    @abstractmethod
-    def map_codigo_localidad(self, centro: Dict[str, Any]) -> str:
         pass
 
     @abstractmethod

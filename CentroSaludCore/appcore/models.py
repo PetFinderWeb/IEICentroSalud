@@ -4,7 +4,6 @@ from django.db import models
 
 
 class Provincia(models.Model):
-    codigo = models.CharField(max_length=2, primary_key=True)
     nombre = models.CharField(max_length=100)
 
     def __str__(self):
@@ -12,7 +11,6 @@ class Provincia(models.Model):
 
 
 class Localidad(models.Model):
-    codigo = models.CharField(max_length=5, primary_key=True)
     nombre = models.CharField(max_length=100)
     en_provincia = models.ForeignKey(Provincia, on_delete=models.CASCADE)
 
