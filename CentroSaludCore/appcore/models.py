@@ -2,6 +2,7 @@ from django.db import models
 
 # Create your models here.
 
+
 class Provincia(models.Model):
     codigo = models.CharField(max_length=2, primary_key=True)
     nombre = models.CharField(max_length=100)
@@ -9,13 +10,15 @@ class Provincia(models.Model):
     def __str__(self):
         return self.nombre
 
+
 class Localidad(models.Model):
     codigo = models.CharField(max_length=5, primary_key=True)
     nombre = models.CharField(max_length=100)
     en_provincia = models.ForeignKey(Provincia, on_delete=models.CASCADE)
-    
+
     def __str__(self):
         return self.nombre
+
 
 class Establecimiento_Sanitario(models.Model):
     HOSPITAL = 'H'
@@ -28,14 +31,27 @@ class Establecimiento_Sanitario(models.Model):
     ]
     nombre = models.CharField(max_length=200)
     tipo = models.CharField(max_length=1, choices=TIPO, default=OTROS)
-    direccion = models.CharField(max_length = 150)
-    codigo_postal = models.CharField(max_length=5 , null = True)
-    longitud= models.FloatField()
-    latitud = models.FloatField()
+    direccion = models.CharField(max_length=150)
+    codigo_postal = models.CharField(max_length=5, null=True)
+    longitud = models.FloatField(null=True)
+    latitud = models.FloatField(null=True)
     telefono = models.CharField(max_length=13, null=True)
     descripcion = models.TextField(blank=True)
     # Relaciones
     en_localidad = models.ForeignKey(Localidad, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.nombre
+        if self.latitud == None:
+            lat = "X"
+        else:
+            lat = self.latitud
+        if self.longitud == None:
+            lang = "X"
+        else:
+            lang = self.longitud
+        if self.codigo_postal == None:
+            postal = "X"
+        else:
+            postal = self.codigo_postal
+
+        return self.nombre + ". LAT: " + lat + ". LONG:" + lang + ". POSTALCOODE: " + postal

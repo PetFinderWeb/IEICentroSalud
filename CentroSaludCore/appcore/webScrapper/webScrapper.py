@@ -54,11 +54,12 @@ class WebScrapper():
             longitude = self.longitudeInput.get_attribute('value')
             return (latitude, longitude)
         except:
-            print('Aceptando alert. No se ha encontrado')
             return (None, None)
 
     def searchByCoordinates(self, lat, lang):
         try:
+            self.latitudeInput.clear()
+            self.longitudeInput.clear()
             self.latitudeInput.send_keys(lat)
             self.longitudeInput.send_keys(lang)
             address = self.addressInput.get_attribute('value')
@@ -70,19 +71,10 @@ class WebScrapper():
                 timeToLiveWhile = timeToLiveWhile + 1
                 time.sleep(0.2)
             address = self.addressInput.get_attribute('value')
-            postalCode = re.search(r'\d{5}', address)
-            if (len(postalCode) == 0):
+            postalCode = re.findall(r'\d{5}', address)
+            if (len(postalCode[0]) == 0):
                 return None
             else:
-                return postalCode
-            # if (postalCode == None):
-            #     print(medicalCenterAddress + '. Latitud: ' + latitude +
-            #           '. Longitud: ' + longitude + '. Código postal no encontrado ')
-            #     return (latitude, longitude, None)
-            # else:
-            #     print(medicalCenterAddress + '. Latitud: ' + latitude +
-            #           '. Longitud: ' + longitude + '. Código postal:' + postalCode)
-            # return (latitude, longitude, postalCode[0])
+                return postalCode[0]
         except:
-            print('Aceptando alert. No se ha encontrado')
             return (None)
