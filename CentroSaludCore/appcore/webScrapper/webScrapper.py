@@ -2,12 +2,18 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.remote.webdriver import WebElement
 import time
 import re
 
 
 class WebScrapper():
     driver: webdriver.Firefox
+    addressInput: WebElement
+    getCoordinatesButton: WebElement
+    getDirectionButton: WebElement
+    latitudeInput: WebElement
+    longitudeInput: WebElement
 
     def __init__(self):
         seleniumOptions = Options()
