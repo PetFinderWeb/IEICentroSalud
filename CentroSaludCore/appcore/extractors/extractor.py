@@ -9,6 +9,7 @@ class Extractor(ABC):
         archivo = self.abrir_fichero()
         datos = self.analizar_datos(archivo)
         self.guardar_datos(datos)
+        archivo.close()
 
     @abstractmethod
     def abrir_fichero(self, ruta: str) -> IO:
