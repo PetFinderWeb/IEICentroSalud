@@ -15,7 +15,7 @@ class XML_Extactor(Extractor):
         self.webScrapper = WebScrapper()
 
     def abrir_fichero(self) -> IO:
-        path = os.path.join(MEDIA_ROOT, 'establecimientos-sanitarios-IB.xml')
+        path = os.path.join(MEDIA_ROOT, 'biblioteques.xml')
         return open(path, mode='r', encoding='utf-8')
 
     def analizar_datos(self, file: IO) -> List[Dict[str, Any]]:
