@@ -63,11 +63,11 @@ class CSV_Extractor(Extractor):
             'HOSPITALES GENERALES'
         ]
         if tipoCentro in tiposCentrosDeSalud:  # Añadir el resto de tipos de centros
-            res = "CENTRO DE SALUD"
+            res = "C"
         elif tipoCentro in tiposHospitales:
-            res = "HOSPITAL"
+            res = "H"
         else:
-            res = "OTROS"
+            res = "O"
         return res
 
     def map_direccion_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:

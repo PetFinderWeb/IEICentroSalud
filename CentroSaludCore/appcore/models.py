@@ -52,4 +52,4 @@ class Establecimiento_Sanitario(models.Model):
         else:
             postal = self.codigo_postal
 
-        return self.nombre + ". LAT: " + lat + ". LONG:" + lang + ". POSTALCOODE: " + postal
+        return self.nombre + ". LAT: " + str(lat) + ". LONG:" + str(lang) + ". POSTALCOODE: " + postal

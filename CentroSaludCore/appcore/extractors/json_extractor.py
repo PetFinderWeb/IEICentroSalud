@@ -20,12 +20,13 @@ class JSON_Extractor(Extractor):
 
     def map_tipo_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
         tipo = centro.get('Tipodecentro').strip().lower()
-        if 'centro de salud' in tipo:
-            return 'CENTRO DE SALUD'
-        if 'hospital' in tipo:
-            return 'HOSPITAL'
+        print(tipo)
+        if 'centro de salud' == tipo or 'consultorio' == tipo or 'ambulatorio' == tipo or 'centro de salud mental' == tipo:
+            return 'C'
+        if 'hospital' == tipo:
+            return 'H'
         else:
-            return 'OTROS'
+            return 'O'
 
     def map_direccion_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
         return centro.get('Direccion').strip()

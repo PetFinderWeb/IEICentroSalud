@@ -36,9 +36,9 @@ class XML_Extactor(Extractor):
     def map_tipo_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
         tipoCentro = centro["funcio"]
         if tipoCentro == "CENTRE SANITARI" or tipoCentro == "UNITAT BÀSICA":
-            res = "CENTRO DE SALUD"
+            res = "C"
         else:
-            res = "OTROS"
+            res = "O"
         return res
 
     def map_direccion_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
