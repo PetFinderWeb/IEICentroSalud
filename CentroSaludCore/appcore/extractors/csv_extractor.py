@@ -19,7 +19,7 @@ class CSV_Extractor(Extractor):
     def __init__(self):
         self.webScrapper = WebScrapper()
 
-    def abrir_fichero(self, ruta=os.path.join(MEDIA_ROOT, 'directorio-de-bibliotecas-valencianas_2020.csv')):
+    def abrir_fichero(self, ruta=os.path.join(MEDIA_ROOT, 'establecimientos-sanitarios-CV.csv')):
         return open(ruta, mode='r')
 
     def analizar_datos(self, file: IO) -> List[Dict[str, Any]]:

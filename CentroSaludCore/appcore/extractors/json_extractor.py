@@ -6,11 +6,10 @@ from CentroSaludCore.settings import MEDIA_ROOT
 from appcore.extractors.extractor import Extractor
 
 
-
 class JSON_Extractor(Extractor):
 
     def abrir_fichero(self):
-        path = os.path.join(MEDIA_ROOT, 'bibliotecas.json')
+        path = os.path.join(MEDIA_ROOT, 'establecimientos-sanitarios-EUS.json')
         return open(path, mode='r', encoding="utf8")
 
     def analizar_datos(self, file):
@@ -27,31 +26,31 @@ class JSON_Extractor(Extractor):
             return 'HOSPITAL'
         else:
             return 'OTROS'
-        
+
     def map_direccion_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
         return centro.get('Direccion').strip()
-    
+
     def map_codigopostal_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
         return centro.get('Codigopostal').strip()
-    
+
     def map_latitud_establecimiento_sanitario(self, centro: Dict[str, Any]) -> float:
         return float(centro.get('LATWGS84'))
-        
+
     def map_longitud_establecimiento_sanitario(self, centro: Dict[str, Any]) -> float:
         return float(centro.get('LONWGS84'))
-    
+
     def map_telefono_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
         return centro.get('Telefono', '').strip().replace(',0', '').replace('.', '')
 
     def map_descripcion_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
         horario = centro.get('HorarioatencionCiudadana')
-        if horario is not None: 
+        if horario is not None:
             return horario
         else:
             return 'Horario no disponible'
 
     def map_nombre_localidad(self, centro: Dict[str, Any]) -> str:
         return centro.get('Municipio').strip().title()
-    
+
     def map_nombre_provincia(self, centro: Dict[str, Any]) -> str:
         return centro.get('Provincia').strip().title()
