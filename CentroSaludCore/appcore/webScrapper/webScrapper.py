@@ -43,6 +43,7 @@ class WebScrapper():
             self.addressInput.send_keys(medicalCenterAddress)
             latitude = self.latitudeInput.get_attribute('value')
             longitude = self.longitudeInput.get_attribute('value')
+            address = self.addressInput.get_attribute('value')
             self.driver.execute_script(
                 "arguments[0].click();", self.getCoordinatesButton)
             timeToLiveWhile = 0
@@ -52,8 +53,19 @@ class WebScrapper():
                 timeToLiveWhile = timeToLiveWhile + 1
             latitude = self.latitudeInput.get_attribute('value')
             longitude = self.longitudeInput.get_attribute('value')
+            # print("Las coordenadas de " + medicalCenterAddress + " son " + str(latitude) + " y " +  str(longitude))
+            # Comprobamos si ha obtenido el código postal
+            if (address != self.addressInput.get_attribute('value')):
+                address = self.addressInput.get_attribute('value')
+                # Buscar 5 dígitos en la nueva address
+                postalCode = re.findall(r'\d{5}', address)
+                # Si la expresión regular devuelve resultados, return también el código postal
+                if (len(postalCode) > 0 and len(postalCode[0]) > 0):
+                    return (latitude, longitude, postalCode[0])
+            # En caso contrario return solo latitud y longitud
             return (latitude, longitude)
-        except:
+        except Exception as e:
+            print(e)
             return (None, None)
 
     def searchByCoordinates(self, lat, lang):

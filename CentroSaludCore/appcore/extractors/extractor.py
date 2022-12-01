@@ -22,10 +22,13 @@ class Extractor(ABC):
 
     def guardar_datos(self, mapped_data: List[Dict[str, Any]]) -> None:
         for centro in mapped_data:
-            provincia = self.get_save_provincia(centro)
-            localidad = self.get_save_localidad(centro, provincia)
-            self.create_save_establecimiento_sanitario(centro, localidad)
-
+            try:
+                provincia = self.get_save_provincia(centro)
+                localidad = self.get_save_localidad(centro, provincia)
+                self.create_save_establecimiento_sanitario(centro, localidad)
+            except Exception as e:
+                print(e)
+                continue
     def get_save_provincia(self, centro: Dict[str, Any]) -> Provincia:
         try:
             provincia = Provincia.objects.get(
@@ -52,6 +55,14 @@ class Extractor(ABC):
         return localidad
 
     def create_save_establecimiento_sanitario(self, centro: Dict[str, Any], localidad: Localidad):
+
+        nombre=self.map_nombre_establecimiento_sanitario(centro)
+        centroRepetido = Establecimiento_Sanitario.objects.filter(
+                nombre__iexact=nombre
+        )
+        if centroRepetido.count() != 0:
+            raise Exception("El centro sanitario " + nombre + " se encuentra repetido.")
+
         centro = Establecimiento_Sanitario(
             nombre=self.map_nombre_establecimiento_sanitario(centro),
             tipo=self.map_tipo_establecimiento_sanitario(centro),
@@ -64,7 +75,7 @@ class Extractor(ABC):
             descripcion=self.map_descripcion_establecimiento_sanitario(centro),
             en_localidad=localidad
         )
-        print(centro)
+        # print(centro)
         centro.save()
 
     @abstractmethod
