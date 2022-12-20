@@ -58,13 +58,11 @@ class Extractor(ABC):
             direccion=self.map_direccion_establecimiento_sanitario(centro),
             longitud=self.map_longitud_establecimiento_sanitario(centro),
             latitud=self.map_latitud_establecimiento_sanitario(centro),
-            codigo_postal=self.map_codigopostal_establecimiento_sanitario(
-                centro),
+            codigo_postal=self.map_codigopostal_establecimiento_sanitario(centro),
             telefono=self.map_telefono_establecimiento_sanitario(centro),
             descripcion=self.map_descripcion_establecimiento_sanitario(centro),
             en_localidad=localidad
         )
-        print(centro)
         centro.save()
 
     @abstractmethod

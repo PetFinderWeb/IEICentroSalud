@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q
 
 # Create your models here.
 
@@ -8,6 +9,9 @@ class Provincia(models.Model):
 
     def __str__(self):
         return self.nombre
+    
+    def natural_key(self):
+        return (self.nombre,)
 
 
 class Localidad(models.Model):
@@ -16,6 +20,28 @@ class Localidad(models.Model):
 
     def __str__(self):
         return self.nombre
+
+    def natural_key(self):
+        return (self.nombre, )# + self.en_provincia.natural_key()
+    natural_key.dependencies = ['appcore.provincia']
+
+
+class EstablecimientosManager(models.Manager):
+    def buscar_por_tipo(self, tipo, provincia, cp, localidad):
+        result = self.none()
+        if provincia != '':
+            result = result.union(super().get_queryset().filter(en_localidad__en_provincia__nombre=provincia))
+        if cp != '':
+            result = result.union(super().get_queryset().filter(codigo_postal=cp))
+        if localidad != '':
+            result = result.union(super().get_queryset().filter(en_localidad__nombre=localidad))
+        if provincia == '' and cp == '' and localidad == '':
+            result = super().get_queryset()
+        if tipo != 'T':
+            result = result.filter(tipo=tipo)
+        
+        return result
+
 
 
 class Establecimiento_Sanitario(models.Model):
@@ -53,3 +79,5 @@ class Establecimiento_Sanitario(models.Model):
             postal = self.codigo_postal
 
         return self.nombre + ". LAT: " + str(lat) + ". LONG:" + str(lang) + ". POSTALCOODE: " + postal
+
+    establecimientos = EstablecimientosManager()
