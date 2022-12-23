@@ -2,23 +2,30 @@
 from typing import *
 from ..models import Establecimiento_Sanitario, Provincia, Localidad
 from abc import ABC, abstractmethod
+import http.client
+import json
 
 
 class Extractor(ABC):
 
-    def extraer_de_fichero(self) -> None:
-        archivo = self.abrir_fichero()
-        datos = self.analizar_datos(archivo)
+    def extraer_de_fichero(self, port, path, server='localhost', all=False) -> None:
+        datos = self.llamar_wrapper(port, path, server, all)
         self.guardar_datos(datos)
-        archivo.close()
 
-    @abstractmethod
-    def abrir_fichero(self, ruta: str) -> IO:
-        pass
-
-    @abstractmethod
-    def analizar_datos(self, file: IO) -> List[Dict[str, Any]]:
-        pass
+    def llamar_wrapper(self, port, path, server, all):
+        connection = http.client.HTTPConnection(server, port)
+        if all == True:
+            headers = {"all": "true"}
+        else:
+            headers = {}
+        connection.request("GET", path, headers=headers)
+        response = connection.getresponse()
+        if response.status != 200:
+            print("Error al llamar al wrapper")
+        string = response.read().decode('utf-8')
+        json_content = json.loads(string)
+        connection.close()
+        return json_content
 
     def guardar_datos(self, mapped_data: List[Dict[str, Any]]) -> None:
         for centro in mapped_data:
@@ -58,7 +65,8 @@ class Extractor(ABC):
             direccion=self.map_direccion_establecimiento_sanitario(centro),
             longitud=self.map_longitud_establecimiento_sanitario(centro),
             latitud=self.map_latitud_establecimiento_sanitario(centro),
-            codigo_postal=self.map_codigopostal_establecimiento_sanitario(centro),
+            codigo_postal=self.map_codigopostal_establecimiento_sanitario(
+                centro),
             telefono=self.map_telefono_establecimiento_sanitario(centro),
             descripcion=self.map_descripcion_establecimiento_sanitario(centro),
             en_localidad=localidad

@@ -7,8 +7,13 @@ from django.core import serializers
 
 
 def cargar_csv(request):
+    # Cargar todos los registros o únicamente los de la demo
+    if request.GET.get('all', False) == 'true':
+        path = 'directorio-de-bibliotecas-valencianas_2020.csv'
+    else:
+        path = 'establecimientos-sanitarios-CV.csv'
     # abrir el fichero en modo lectura
-    with open(os.path.join(MEDIA_ROOT, 'directorio-de-bibliotecas-valencianas_2020.csv'), 'r') as file:
+    with open(os.path.join(MEDIA_ROOT, path), 'r') as file:
         res = []
         # parsear el fichero CSV como un diccionario
         datosDiccionario = csv.DictReader(file, delimiter=';')

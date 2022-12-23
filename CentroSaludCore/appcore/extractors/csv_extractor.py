@@ -1,8 +1,4 @@
 
-import codecs
-import csv
-import os
-import json
 from typing import *
 # from CentroSaludCore.appcore.extractors.extractor import Extractor
 
@@ -18,17 +14,10 @@ class CSV_Extractor(Extractor):
 
     def __init__(self):
         self.webScrapper = WebScrapper()
-
-    def abrir_fichero(self, ruta=os.path.join(MEDIA_ROOT, 'directorio-de-bibliotecas-valencianas_2020.csv')):
-        return open(ruta, mode='r')
+        pass
 
     def analizar_datos(self, file: IO) -> List[Dict[str, Any]]:
-        jsonDatos = []
-        # CSV to JSON
-        datosDiccionario = csv.DictReader(file, delimiter=';')
-        for row in datosDiccionario:
-            jsonDatos.append(row)
-        return jsonDatos
+        return file
 
     def map_codigo_provincia(self, centro: Dict[str, Any]) -> str:
         return centro["Codi_província / Código_provincia"]

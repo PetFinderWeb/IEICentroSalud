@@ -29,7 +29,7 @@ def cargar_csv(request):
 
 
 def borrar_bdd(request):
-    Establecimiento_Sanitario.objects.all().delete()
+    Establecimiento_Sanitario.establecimientos.all().delete()
     Provincia.objects.all().delete()
     Localidad.objects.all().delete()
     return HttpResponse(status=200)
@@ -38,13 +38,14 @@ def borrar_bdd(request):
 def carga_parametrizada(request):
     if request.GET.get('p', False) == 'true':
         extractor = JSON_Extractor()
-        extractor.extraer_de_fichero()
+        extractor.extraer_de_fichero(port=10001, path='/wrapper/cargar_json/')
+
     if request.GET.get('c', False) == 'true':
         extractor = CSV_Extractor()
-        extractor.extraer_de_fichero()
+        extractor.extraer_de_fichero(port=10000, path='/wrapper/cargar_csv/')
     if request.GET.get('b', False) == 'true':
         extractor = XML_Extactor()
-        extractor.extraer_de_fichero()
+        extractor.extraer_de_fichero(port=10002, path='/wrapper/cargar_xml/')
 
     return HttpResponse(status=200)
 
@@ -57,5 +58,6 @@ def busqueda(request):
 
     queryset = Establecimiento_Sanitario.establecimientos.buscar_por_tipo(
         tipo, provincia, cod_postal, localidad)
-    data = serializers.serialize('json', queryset, use_natural_foreign_keys=True)
+    data = serializers.serialize(
+        'json', queryset, use_natural_foreign_keys=True)
     return HttpResponse(data, content_type='application/json')
