@@ -13,6 +13,8 @@ class XML_Extactor(Extractor):
 
     def __init__(self):
         self.webScrapper = WebScrapper()
+        self.errores = []
+        self.centrosSantinarios = 0
 
     def map_nombre_provincia(self, centro: Dict[str, Any]) -> str:
         return "Islas baleares"
@@ -38,7 +40,8 @@ class XML_Extactor(Extractor):
         self.latlangcode = self.webScrapper.searchByCoordinates(
             centro["lat"], centro["long"])
         if (self.latlangcode == None):
-            return None
+            raise Exception("No se ha podido obtener el código postal del centro sanitario " +
+                            self.map_nombre_establecimiento_sanitario(centro))
         else:
             return self.latlangcode
 

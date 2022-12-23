@@ -36,18 +36,39 @@ def borrar_bdd(request):
 
 
 def carga_parametrizada(request):
+    errores = []
+    centrosSanitarios = 0
     if request.GET.get('p', False) == 'true':
-        extractor = JSON_Extractor()
-        extractor.extraer_de_fichero(port=10001, path='/wrapper/cargar_json/')
-
+        try:
+            extractor = JSON_Extractor()
+            extractor.extraer_de_fichero(
+                port=10001, path='/wrapper/cargar_json/')
+        except Exception as e:
+            errores += [str(e)]
+        finally:
+            errores += extractor.errores
+        centrosSanitarios += extractor.centrosSantinarios
     if request.GET.get('c', False) == 'true':
-        extractor = CSV_Extractor()
-        extractor.extraer_de_fichero(port=10000, path='/wrapper/cargar_csv/')
+        try:
+            extractor = CSV_Extractor()
+            extractor.extraer_de_fichero(
+                port=10000, path='/wrapper/cargar_csv/')
+        except Exception as e:
+            errores += [str(e)]
+        finally:
+            errores += extractor.errores
+        centrosSanitarios += extractor.centrosSantinarios
     if request.GET.get('b', False) == 'true':
-        extractor = XML_Extactor()
-        extractor.extraer_de_fichero(port=10002, path='/wrapper/cargar_xml/')
-
-    return HttpResponse(status=200)
+        try:
+            extractor = XML_Extactor()
+            extractor.extraer_de_fichero(
+                port=10002, path='/wrapper/cargar_xml/')
+        except Exception as e:
+            errores += [str(e)]
+        finally:
+            errores += extractor.errores
+        centrosSanitarios += extractor.centrosSantinarios
+    return JsonResponse(data={'errores': errores, 'centrosSanitarios': centrosSanitarios})
 
 
 def busqueda(request):

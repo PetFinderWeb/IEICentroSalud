@@ -14,6 +14,8 @@ class CSV_Extractor(Extractor):
 
     def __init__(self):
         self.webScrapper = WebScrapper()
+        self.errores = []
+        self.centrosSantinarios = 0
 
     def map_codigo_provincia(self, centro: Dict[str, Any]) -> str:
         return centro["Codi_província / Código_provincia"]
@@ -66,7 +68,8 @@ class CSV_Extractor(Extractor):
             postalCode = self.webScrapper.searchByCoordinates(
                 self.latlang[0], self.latlang[1])
             if (postalCode == None):
-                return None
+                raise Exception("No se ha podido obtener el código postal del centro sanitario " +
+                                self.map_nombre_establecimiento_sanitario(centro))
             else:
                 return postalCode
 
@@ -76,14 +79,16 @@ class CSV_Extractor(Extractor):
             centro["Adreça / Dirección"] + " , " + centro["Municipi / Municipio"] + ', ESPAÑA')
 
         if (self.latlang[1] == None):
-            return None
+            raise Exception("No se ha podido obtener la longitud del centro sanitario " +
+                            self.map_nombre_establecimiento_sanitario(centro))
         else:
             return self.latlang[1]
 
     def map_latitud_establecimiento_sanitario(self, centro: Dict[str, Any]) -> float:
         # Obtenido mediante web scrapping en el método map_longitud_establecimiento_sanitario
         if (self.latlang[0] == None):
-            return None
+            raise Exception("No se ha podido obtener la latitud del centro sanitario " +
+                            self.map_nombre_establecimiento_sanitario(centro))
         else:
             return self.latlang[0]
 

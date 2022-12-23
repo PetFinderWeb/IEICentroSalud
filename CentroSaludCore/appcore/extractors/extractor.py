@@ -8,6 +8,7 @@ import json
 
 class Extractor(ABC):
     errores: List[str] = []
+    centrosSantinarios: int = 0
 
     def extraer_de_fichero(self, port, path, server='localhost', all=False) -> List[str]:
         datos = self.llamar_wrapper(port, path, server, all)
@@ -22,7 +23,7 @@ class Extractor(ABC):
         connection.request("GET", path, headers=headers)
         response = connection.getresponse()
         if response.status != 200:
-            print("Error al llamar al wrapper")
+            raise Exception("Error al comunicarse con el wrapper")
         string = response.read().decode('utf-8')
         json_content = json.loads(string)
         connection.close()
@@ -34,8 +35,9 @@ class Extractor(ABC):
                 provincia = self.get_save_provincia(centro)
                 localidad = self.get_save_localidad(centro, provincia)
                 self.create_save_establecimiento_sanitario(centro, localidad)
+                self.centrosSantinarios += 1
             except Exception as e:
-                print(e)
+                self.errores.append(str(e))
                 continue
 
     def get_save_provincia(self, centro: Dict[str, Any]) -> Provincia:
@@ -66,7 +68,7 @@ class Extractor(ABC):
     def create_save_establecimiento_sanitario(self, centro: Dict[str, Any], localidad: Localidad):
         nombre = self.map_nombre_establecimiento_sanitario(centro)
         # Comprobamos si el centro ya existe en la base de datos
-        centroRepetido = Establecimiento_Sanitario.objects.filter(
+        centroRepetido = Establecimiento_Sanitario.establecimientos.filter(
             nombre__iexact=nombre
         )
         if centroRepetido.count() != 0:

@@ -8,6 +8,10 @@ from appcore.extractors.extractor import Extractor
 
 class JSON_Extractor(Extractor):
 
+    def __init__(self):
+        self.errores = []
+        self.centrosSantinarios = 0
+
     def map_nombre_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
         return centro.get('Nombre')
 
