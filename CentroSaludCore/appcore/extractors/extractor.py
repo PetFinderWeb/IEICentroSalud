@@ -7,8 +7,9 @@ import json
 
 
 class Extractor(ABC):
+    errores: List[str] = []
 
-    def extraer_de_fichero(self, port, path, server='localhost', all=False) -> None:
+    def extraer_de_fichero(self, port, path, server='localhost', all=False) -> List[str]:
         datos = self.llamar_wrapper(port, path, server, all)
         self.guardar_datos(datos)
 

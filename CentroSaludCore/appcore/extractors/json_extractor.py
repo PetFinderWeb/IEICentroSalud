@@ -8,13 +8,6 @@ from appcore.extractors.extractor import Extractor
 
 class JSON_Extractor(Extractor):
 
-    def abrir_fichero(self):
-        path = os.path.join(MEDIA_ROOT, 'bibliotecas.json')
-        return open(path, mode='r', encoding="utf8")
-
-    def analizar_datos(self, file):
-        return json.load(file)
-
     def map_nombre_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
         return centro.get('Nombre')
 

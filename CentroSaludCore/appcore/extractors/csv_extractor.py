@@ -14,10 +14,6 @@ class CSV_Extractor(Extractor):
 
     def __init__(self):
         self.webScrapper = WebScrapper()
-        pass
-
-    def analizar_datos(self, file: IO) -> List[Dict[str, Any]]:
-        return file
 
     def map_codigo_provincia(self, centro: Dict[str, Any]) -> str:
         return centro["Codi_província / Código_provincia"]
