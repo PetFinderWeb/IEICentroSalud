@@ -15,18 +15,22 @@ class Extractor(ABC):
         self.guardar_datos(datos)
 
     def llamar_wrapper(self, port, path, server, all):
-        connection = http.client.HTTPConnection(server, port)
-        if all == True:
-            headers = {"all": "true"}
-        else:
-            headers = {}
-        connection.request("GET", path, headers=headers)
-        response = connection.getresponse()
-        if response.status != 200:
-            raise Exception("Error al comunicarse con el wrapper")
-        string = response.read().decode('utf-8')
-        json_content = json.loads(string)
-        connection.close()
+        try:
+            connection = http.client.HTTPConnection(server, port)
+            if all == True:
+                headers = {"all": "true"}
+            else:
+                headers = {}
+            connection.request("GET", path, headers=headers)
+            response = connection.getresponse()
+            if response.status != 200:
+                raise Exception(
+                    "Status code " + str(response.status))
+            string = response.read().decode('utf-8')
+            json_content = json.loads(string)
+            connection.close()
+        except Exception as e:
+            raise Exception("Error al comunicarse con el wrapper. " + str(e))
         return json_content
 
     def guardar_datos(self, mapped_data: List[Dict[str, Any]]) -> None:
