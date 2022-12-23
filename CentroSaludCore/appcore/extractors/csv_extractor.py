@@ -60,26 +60,28 @@ class CSV_Extractor(Extractor):
 
     def map_codigopostal_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
         # Obtener mediante Web Scrapping
-        if (self.latlang[0] == None or self.latlang[1] == None):
-            return None
-        postalCode = self.webScrapper.searchByCoordinates(
-            self.latlang[0], self.latlang[1])
-        if (postalCode == None):
-            return None
+        if (len(self.latlang) == 3 and self.latlang[2] != None):
+            return self.latlang[2]
         else:
-            return postalCode
+            postalCode = self.webScrapper.searchByCoordinates(
+                self.latlang[0], self.latlang[1])
+            if (postalCode == None):
+                return None
+            else:
+                return postalCode
 
     def map_longitud_establecimiento_sanitario(self, centro: Dict[str, Any]) -> float:
         # Obtener mediante Web Scrapping
         self.latlang = self.webScrapper.searchByAddress(
             centro["Adreça / Dirección"] + " , " + centro["Municipi / Municipio"] + ', ESPAÑA')
+
         if (self.latlang[1] == None):
             return None
         else:
             return self.latlang[1]
 
     def map_latitud_establecimiento_sanitario(self, centro: Dict[str, Any]) -> float:
-        # Obtener mediante Web Scrapping
+        # Obtenido mediante web scrapping en el método map_longitud_establecimiento_sanitario
         if (self.latlang[0] == None):
             return None
         else:
