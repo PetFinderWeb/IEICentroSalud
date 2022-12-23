@@ -9,7 +9,7 @@ class Provincia(models.Model):
 
     def __str__(self):
         return self.nombre
-    
+
     def natural_key(self):
         return (self.nombre,)
 
@@ -22,26 +22,26 @@ class Localidad(models.Model):
         return self.nombre
 
     def natural_key(self):
-        return (self.nombre, )# + self.en_provincia.natural_key()
+        return (self.nombre, )  # + self.en_provincia.natural_key()
     natural_key.dependencies = ['appcore.provincia']
 
 
 class EstablecimientosManager(models.Manager):
     def buscar_por_tipo(self, tipo, provincia, cp, localidad):
-        result = self.none()
+        result = super().all()
         if provincia != '':
-            result = result.union(super().get_queryset().filter(en_localidad__en_provincia__nombre=provincia))
+            result = result.filter(
+                en_localidad__en_provincia__nombre__iexact=provincia)
         if cp != '':
-            result = result.union(super().get_queryset().filter(codigo_postal=cp))
+            result = result.filter(
+                codigo_postal=cp)
         if localidad != '':
-            result = result.union(super().get_queryset().filter(en_localidad__nombre=localidad))
-        if provincia == '' and cp == '' and localidad == '':
-            result = super().get_queryset()
+            result = result.filter(
+                en_localidad__nombre__icontains=localidad)
         if tipo != 'T':
             result = result.filter(tipo=tipo)
-        
-        return result
 
+        return result
 
 
 class Establecimiento_Sanitario(models.Model):
