@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { getAllCentros } from "../../services/fetches";
+import { getAllCentros, deleteCentros } from "../../services/fetches";
 import "./LoadForm.css";
 
 function LoadForm() {
@@ -9,7 +9,7 @@ function LoadForm() {
   const [CVchecked, setCVChecked] = useState(false);
   const [Echecked, setEChecked] = useState(false);
   const [centros, setCentros] = useState([]);
-  const [arr, setArr] = useState([]);
+  const [validate, setValidate] = useState(true);
 
   const handleCheck = (e) => {
     if (e.target.id === "todas") {
@@ -24,26 +24,34 @@ function LoadForm() {
     if (e.target.id === "e") {
       setEChecked((current) => !current);
     }
-    setArr([Tchecked, IBchecked, CVchecked, Echecked]);
+  };
+
+  const deleteDB = (e) => {
+    deleteCentros();
   };
 
   const handleSubmint = (e) => {
     e.preventDefault();
-    console.log(arr);
-    getAllCentros()
-      .then(async (response) => {
-        const data = await response.json();
-        if (!response.ok) {
-          const error = (data && data.message) || response.statusText;
-          return Promise.reject(error);
-        }
-        console.log(data);
-        setCentros(data);
-      })
-      .catch((error) => {
-        console.error("Hay un error", error);
-      });
-    console.log(centros);
+    setValidate(false);
+    if (Tchecked) {
+      getAllCentros()
+        .then(async (response) => {
+          const data = await response.json();
+          if (!response.ok) {
+            const error = (data && data.message) || response.statusText;
+            return Promise.reject(error);
+          }
+          console.log(data.errores);
+          setCentros(data);
+
+          console.log(centros, "then");
+          setValidate(true);
+        })
+        .catch((error) => {
+          console.error("Hay un error", error);
+        });
+      console.log(centros);
+    }
   };
 
   return (
@@ -104,6 +112,10 @@ function LoadForm() {
                 }}
               >
                 Cancelar
+              </button>
+              <button disabled={!validate} onClick={deleteDB}>
+                {" "}
+                Reiniciar almacén de datos
               </button>
             </div>
           </form>{" "}
