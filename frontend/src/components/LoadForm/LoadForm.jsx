@@ -1,5 +1,9 @@
 import { useRef, useState } from "react";
-import { getAllCentros, deleteCentros } from "../../services/fetches";
+import {
+  getAllCentros,
+  deleteCentros,
+  getECentros,
+} from "../../services/fetches";
 import "./LoadForm.css";
 
 function LoadForm() {
@@ -33,24 +37,22 @@ function LoadForm() {
   const handleSubmint = (e) => {
     e.preventDefault();
     setValidate(false);
+    console.log("a");
     if (Tchecked) {
-      getAllCentros()
+      getECentros()
         .then(async (response) => {
           const data = await response.json();
           if (!response.ok) {
             const error = (data && data.message) || response.statusText;
             return Promise.reject(error);
           }
-          console.log(data.errores);
-          setCentros(data);
+          setCentros(data.errores);
 
-          console.log(centros, "then");
           setValidate(true);
         })
         .catch((error) => {
           console.error("Hay un error", error);
         });
-      console.log(centros);
     }
   };
 
@@ -63,7 +65,7 @@ function LoadForm() {
         <div className="contenedor-formulario2">
           <form ref={refForm} onSubmit={handleSubmint}>
             <label>Seleccione fuente</label>
-            <div class="checkboxes">
+            <div className="checkboxes">
               <label>
                 <input type="checkbox" id="todas" onChange={handleCheck} />{" "}
                 Seleccionar todas
@@ -113,14 +115,20 @@ function LoadForm() {
               >
                 Cancelar
               </button>
-              <button disabled={!validate} onClick={deleteDB}>
+              <button type="button" disabled={!validate} onClick={deleteDB}>
                 {" "}
                 Reiniciar almacén de datos
               </button>
             </div>
           </form>{" "}
+          <label>Resultados de la carga</label>
           <div>
-            <text>Resultados de la carga</text>
+            <label> &nbsp;</label>
+            {centros.forEach((element) => {
+              console.log(element);
+              <label>aaa</label>;
+              <label> {element} </label>;
+            })}
           </div>
         </div>
       </div>

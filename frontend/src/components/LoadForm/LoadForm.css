@@ -93,3 +93,6 @@
 .checkboxes label span {
   vertical-align: middle;
 }
+.borderErrors {
+  border-radius: 1px;
+}
