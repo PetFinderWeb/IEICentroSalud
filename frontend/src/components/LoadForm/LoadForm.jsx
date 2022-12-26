@@ -1,8 +1,13 @@
 import { useRef, useState } from "react";
 import {
-  getAllCentros,
   deleteCentros,
+  getAllCentros,
+  getIBECentros,
+  getIBCVCentros,
+  getCVECentros,
   getECentros,
+  getIBCentros,
+  gettCVCentros,
 } from "../../services/fetches";
 import "./LoadForm.css";
 
@@ -30,15 +35,87 @@ function LoadForm() {
     }
   };
 
-  const deleteDB = (e) => {
-    deleteCentros();
-  };
-
   const handleSubmint = (e) => {
     e.preventDefault();
     setValidate(false);
-    console.log("a");
+    console.log(Tchecked, IBchecked, CVchecked, Echecked);
     if (Tchecked) {
+      getAllCentros()
+        .then(async (response) => {
+          const data = await response.json();
+          if (!response.ok) {
+            const error = (data && data.message) || response.statusText;
+            return Promise.reject(error);
+          }
+          setCentros(data.errores);
+          setValidate(true);
+          console.log(centros);
+        })
+        .catch((error) => {
+          console.error("Hay un error", error);
+          setValidate(true);
+        });
+    } else if (IBchecked && CVchecked) {
+      getIBCVCentros()
+        .then(async (response) => {
+          const data = await response.json();
+          if (!response.ok) {
+            const error = (data && data.message) || response.statusText;
+            return Promise.reject(error);
+          }
+          setCentros(data.errores);
+          setValidate(true);
+        })
+        .catch((error) => {
+          console.error("Hay un error", error);
+          setValidate(true);
+        });
+    } else if (IBchecked && Echecked) {
+      getIBECentros()
+        .then(async (response) => {
+          const data = await response.json();
+          if (!response.ok) {
+            const error = (data && data.message) || response.statusText;
+            return Promise.reject(error);
+          }
+          setCentros(data.errores);
+          setValidate(true);
+        })
+        .catch((error) => {
+          console.error("Hay un error", error);
+          setValidate(true);
+        });
+    } else if (Echecked && CVchecked) {
+      getCVECentros()
+        .then(async (response) => {
+          const data = await response.json();
+          if (!response.ok) {
+            const error = (data && data.message) || response.statusText;
+            return Promise.reject(error);
+          }
+          setCentros(data.errores);
+          setValidate(true);
+        })
+        .catch((error) => {
+          console.error("Hay un error", error);
+          setValidate(true);
+        });
+    } else if (IBchecked) {
+      getIBCentros()
+        .then(async (response) => {
+          const data = await response.json();
+          if (!response.ok) {
+            const error = (data && data.message) || response.statusText;
+            return Promise.reject(error);
+          }
+          setCentros(data.errores);
+          setValidate(true);
+        })
+        .catch((error) => {
+          console.error("Hay un error", error);
+          setValidate(true);
+        });
+    } else if (Echecked) {
       getECentros()
         .then(async (response) => {
           const data = await response.json();
@@ -47,13 +124,33 @@ function LoadForm() {
             return Promise.reject(error);
           }
           setCentros(data.errores);
-
           setValidate(true);
         })
         .catch((error) => {
           console.error("Hay un error", error);
+          setValidate(true);
+        });
+    } else if (CVchecked) {
+      gettCVCentros()
+        .then(async (response) => {
+          const data = await response.json();
+          if (!response.ok) {
+            const error = (data && data.message) || response.statusText;
+            return Promise.reject(error);
+          }
+          setCentros(data.errores);
+          setValidate(true);
+        })
+        .catch((error) => {
+          console.error("Hay un error", error);
+          setValidate(true);
         });
     }
+  };
+
+  const deleteDB = (e) => {
+    deleteCentros();
+    setCentros([]);
   };
 
   return (
@@ -124,10 +221,14 @@ function LoadForm() {
           <label>Resultados de la carga</label>
           <div>
             <label> &nbsp;</label>
-            {centros.forEach((element) => {
-              console.log(element);
-              <label>aaa</label>;
-              <label> {element} </label>;
+            {centros.map((element) => {
+              return (
+                <label className="errorText">
+                  {" "}
+                  {element} <br />{" "}
+                </label>
+              );
+              console.log(centros);
             })}
           </div>
         </div>
