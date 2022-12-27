@@ -1,30 +1,48 @@
 import { useRef } from "react";
 import "./FilterForm.css";
-
+import { getCentrosByParams } from "../../services/fetches";
 import {
   MapContainer,
   TileLayer,
-  useMapEvents,
   Marker,
   Popup,
 } from "react-leaflet";
 
 import "leaflet/dist/leaflet.css";
-import L, { LatLng, marker } from "leaflet";
+import L from "leaflet"
+import { useState } from "react";
 
 function FilterForm() {
   const refForm = useRef();
-
-  const datos = {
+  const [datos, setDatos] = useState({
     localidad: "",
     cod_postal: "",
     provincia: "",
-    tipo: "",
-  };
+    tipo: "T",
+  });
+  const [centros, setCentros] = useState([])
+
+
   const handleSubmint = (e) => {
     e.preventDefault();
+    getCentrosByParams(datos).then(async (response) => {
+      const data = await response.json();
+      if (!response.ok) {
+        const error = response.statusText;
+        return Promise.reject(error);
+      }
+      setCentros(data);
+      console.log(data);
+    })
     console.log(datos);
   };
+  const IconoMapa = L.icon({
+    iconUrl: require("../../recursos/icon.png"),
+    iconSize: 100
+  });
+
+
+  const position = [51.505, -0.09]
 
   return (
     <div className="landing">
@@ -35,15 +53,29 @@ function FilterForm() {
         <div className="contenedor-formulario">
           <form ref={refForm} onSubmit={handleSubmint}>
             <label>Localidad</label>
-            <input type="text" placeholder="Localidad"></input>
+            <input type="text" placeholder="Localidad" onChange={(e) => {
+              let datosAux = datos;
+              datosAux.localidad = e.target.value;
+              setDatos(datosAux)
+            }}></input>
             <label>Codigo postal</label>
-            <input type="text" placeholder="Codigo postal"></input>
+            <input type="text" placeholder="Codigo postal" onChange={(e) => {
+              let datosAux = datos;
+              datosAux.cod_postal = e.target.value;
+              setDatos(datosAux)
+            }}></input>
             <label>Provincia</label>
-            <input type="text" placeholder="Provincia"></input>
+            <input type="text" placeholder="Provincia" onChange={(e) => {
+              let datosAux = datos;
+              datosAux.provincia = e.target.value;
+              setDatos(datosAux)
+            }}></input>
             <label>Tipo de centro</label>
             <select
               onChange={(e) => {
-                datos.tipo = e.value;
+                let datosAux = datos;
+                datosAux.tipo = e.target.value;
+                setDatos(datosAux)
               }}
             >
               <option value="T">Todos</option>
@@ -66,20 +98,29 @@ function FilterForm() {
         </div>
         <div className="contenedor-mapa">
           <MapContainer
-            center={[51.505, -0.09]}
-            zoom={13}
+            center={[39.466, -0.37]}
+            zoom={12}
             scrollWheelZoom={false}
           >
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            <Marker position={[51.505, -0.09]}>
-              <Popup>
-                A pretty CSS3 popup. <br /> Easily customizable.
-              </Popup>
-            </Marker>
+             {centros.map((centro, index) => (
+              <Marker
+                key={index}
+                position={[centro.fields.latitud, centro.fields.longitud]}
+                icon={IconoMapa}
+              >
+                <Popup className="popup">
+                  <div>
+                    <h1>HOLAAAAA</h1>
+                  </div>
+                </Popup>
+              </Marker>
+            ))}
           </MapContainer>
+
         </div>
       </div>
     </div>
