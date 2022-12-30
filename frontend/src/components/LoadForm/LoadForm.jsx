@@ -18,6 +18,7 @@ function LoadForm() {
   const [CVchecked, setCVChecked] = useState(false);
   const [Echecked, setEChecked] = useState(false);
   const [centros, setCentros] = useState([]);
+  const [totalCentros, setTotalCentros] = useState(0);
   const [validate, setValidate] = useState(true);
 
   const handleCheck = (e) => {
@@ -48,6 +49,7 @@ function LoadForm() {
             return Promise.reject(error);
           }
           setCentros(data.errores);
+          setTotalCentros(data.centrosSanitarios);
           setValidate(true);
           console.log(centros);
         })
@@ -64,6 +66,7 @@ function LoadForm() {
             return Promise.reject(error);
           }
           setCentros(data.errores);
+          setTotalCentros(data.centrosSanitarios);
           setValidate(true);
         })
         .catch((error) => {
@@ -79,6 +82,7 @@ function LoadForm() {
             return Promise.reject(error);
           }
           setCentros(data.errores);
+          setTotalCentros(data.centrosSanitarios);
           setValidate(true);
         })
         .catch((error) => {
@@ -94,6 +98,7 @@ function LoadForm() {
             return Promise.reject(error);
           }
           setCentros(data.errores);
+          setTotalCentros(data.centrosSanitarios);
           setValidate(true);
         })
         .catch((error) => {
@@ -109,6 +114,7 @@ function LoadForm() {
             return Promise.reject(error);
           }
           setCentros(data.errores);
+          setTotalCentros(data.centrosSanitarios);
           setValidate(true);
         })
         .catch((error) => {
@@ -124,6 +130,7 @@ function LoadForm() {
             return Promise.reject(error);
           }
           setCentros(data.errores);
+          setTotalCentros(data.centrosSanitarios);
           setValidate(true);
         })
         .catch((error) => {
@@ -139,6 +146,7 @@ function LoadForm() {
             return Promise.reject(error);
           }
           setCentros(data.errores);
+          setTotalCentros(data.centrosSanitarios);
           setValidate(true);
         })
         .catch((error) => {
@@ -161,7 +169,7 @@ function LoadForm() {
       <div className="contenedor-principal2">
         <div className="contenedor-formulario2">
           <form ref={refForm} onSubmit={handleSubmint}>
-            <label>Seleccione fuente</label>
+            <label style={{ fontWeight: "bold" }}>Seleccione fuente</label>
             <div className="checkboxes">
               <label>
                 <input type="checkbox" id="todas" onChange={handleCheck} />{" "}
@@ -218,9 +226,14 @@ function LoadForm() {
               </button>
             </div>
           </form>{" "}
-          <label>Resultados de la carga</label>
           <div>
-            <label> &nbsp;</label>
+            <label style={{ fontWeight: "bold" }}>
+              {" "}
+              Total de centros cargados: {totalCentros}
+            </label>
+            <br />
+            <label style={{ fontWeight: "bold" }}> Errores:</label>
+            <br />
             {centros.map((element) => {
               return (
                 <label className="errorText">
@@ -228,7 +241,6 @@ function LoadForm() {
                   {element} <br />{" "}
                 </label>
               );
-              console.log(centros);
             })}
           </div>
         </div>
