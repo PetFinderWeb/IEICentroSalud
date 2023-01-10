@@ -28,16 +28,21 @@ class Localidad(models.Model):
 
 class EstablecimientosManager(models.Manager):
     def buscar_por_tipo(self, tipo, provincia, cp, localidad):
+        # Obtener todos los datos
         result = super().all()
+        # Filtrar por provincia si el usuario ha introducido filtro
         if provincia != '':
             result = result.filter(
                 en_localidad__en_provincia__nombre__iexact=provincia)
+        # Filtrar por código postal si el usuario ha introducido filtro
         if cp != '':
             result = result.filter(
                 codigo_postal=cp)
+        # Filtrar por localidad si el usuario ha introducido filtro
         if localidad != '':
             result = result.filter(
                 en_localidad__nombre__icontains=localidad)
+        # Filtrar por provincia si el usuario ha introducido un tipo
         if tipo != 'T':
             result = result.filter(tipo=tipo)
 
