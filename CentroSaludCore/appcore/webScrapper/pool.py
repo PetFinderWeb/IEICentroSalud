@@ -1,29 +1,10 @@
 import csv
-import math
 from multiprocessing import Pool
 import threading
 import time
-import os
 from webScrapper import WebScrapper
-import webScrapper
-# def f(x):
-#     print(str(os.getpid()))
-#     return(x)
-# def log_result(result):
-#     # This is called whenever foo_pool(i) returns a result.
-#     # result_list is modified only by the main process, not the pool workers.
-#     print(result)
-# if __name__ == '__main__':
-#     # start 4 worker processes
-#     pool = Pool(processes=4)
-#     cities = ['valencia', 'madrid', 'barcelona', 'sevilla', 'alicante', 'ibiza', 'santander']
-#     for i in range(len(cities)):
-#         pool.apply_async(f, args = (cities[i], ), callback = log_result)
-#     pool.close()
-#     pool.join()
-# with Pool(processes=4) as pool:
-#     multiple_results = [pool.apply_async(f, (1,)) for i in range(4)]
-#     print([res.get(timeout=1) for res in multiple_results])
+
+"""Aproximación a la paralelización del web scrapping"""
 
 
 def Buscar(addresses):
@@ -32,8 +13,7 @@ def Buscar(addresses):
         scrapper.searchByAddress(i)
 
 
-    # sprint(scrapper.searchByAddress(address))
-print('hola')
+    # sprint(scrapper.searchByAddres(address))
 if __name__ == "__main__":
     threads = list()
     file = open("directorio-de-bibliotecas-valencianas_2020.csv", 'r')

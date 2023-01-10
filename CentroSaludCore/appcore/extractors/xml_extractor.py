@@ -2,15 +2,17 @@ import os
 from typing import *
 from CentroSaludCore.settings import MEDIA_ROOT
 import xml.etree.ElementTree as ET
-import xmltodict
 from appcore.extractors.extractor import Extractor
-import json
 from appcore.webScrapper.webScrapper import WebScrapper
+
+"""Clase que representa el Extractor de la las islas baleares, extiende de la clase 
+extractor e implementa los métodos abstractos."""
 
 
 class XML_Extactor(Extractor):
     webScrapper: WebScrapper
 
+    # Constructor de la clase. Instancia el webScrapper
     def __init__(self):
         self.webScrapper = WebScrapper()
         self.errores = []
@@ -37,8 +39,10 @@ class XML_Extactor(Extractor):
         return centro["adreca"]
 
     def map_codigopostal_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
+        # Obtener mediante Web Scrapping el código postal a partir de la latitud y longitud
         self.latlangcode = self.webScrapper.searchByCoordinates(
             centro["lat"], centro["long"])
+        # Comprobar si se ha podido obtener el código postal. EN caso negativo desechar registro
         if (self.latlangcode == None):
             raise Exception("No se ha podido obtener el código postal del centro sanitario " +
                             self.map_nombre_establecimiento_sanitario(centro))
@@ -52,7 +56,7 @@ class XML_Extactor(Extractor):
         return centro["lat"]
 
     def map_telefono_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
-        return "None"
+        return "None"  # No tenemos teléfono
 
     def map_descripcion_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
         return "None"

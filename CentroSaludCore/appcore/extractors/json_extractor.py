@@ -5,6 +5,9 @@ from CentroSaludCore.settings import MEDIA_ROOT
 
 from appcore.extractors.extractor import Extractor
 
+"""Clase que representa el Extractor del país vasco, extiende de la clase 
+extractor e implementa los métodos abstractos."""
+
 
 class JSON_Extractor(Extractor):
 
@@ -17,7 +20,6 @@ class JSON_Extractor(Extractor):
 
     def map_tipo_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
         tipo = centro.get('Tipodecentro').strip().lower()
-        # print(tipo)
         if 'centro de salud' == tipo or 'consultorio' == tipo or 'ambulatorio' == tipo or 'centro de salud mental' == tipo:
             return 'C'
         if 'hospital' == tipo:
@@ -38,10 +40,12 @@ class JSON_Extractor(Extractor):
         return float(centro.get('LONWGS84'))
 
     def map_telefono_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
+        # Eliminar los puntos y algunos teléfonos que tienen ',0' final
         return centro.get('Telefono', '').strip().replace(',0', '').replace('.', '')
 
     def map_descripcion_establecimiento_sanitario(self, centro: Dict[str, Any]) -> str:
         horario = centro.get('HorarioatencionCiudadana')
+        # Si tenemos información sobre el horario del centro lo ponemos como descripción
         if horario is not None:
             return horario
         else:
