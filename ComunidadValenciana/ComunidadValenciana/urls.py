@@ -17,6 +17,6 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    # el endpoint del wrapper se encuentra definito en wrapper.urls
     path('wrapper/', include('wrapper.urls'))
 ]
