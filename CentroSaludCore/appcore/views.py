@@ -11,7 +11,7 @@ from .models import *
 
 
 def borrar_bdd(request):
-    if request.GET:
+    if request.method == "GET":
         Establecimiento_Sanitario.establecimientos.all().delete()
         Provincia.objects.all().delete()
         Localidad.objects.all().delete()
