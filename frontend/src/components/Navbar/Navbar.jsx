@@ -1,3 +1,6 @@
+/**
+ * Componente que crea la barra de navegación, desde donde se seleccionan dos los formularios
+ */
 import "./Navbar.css";
 import { useState } from "react";
 import LinksNavbar from "./LinksNavbar";
