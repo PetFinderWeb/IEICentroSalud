@@ -132,6 +132,7 @@ async function getCentrosByParams(datos) {
   );
 }
 
+//Exporta los metodos para que puedan ser usados desde otros scripts
 export {
   getCentrosByParams,
   deleteCentros,
