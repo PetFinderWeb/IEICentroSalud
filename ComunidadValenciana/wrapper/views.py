@@ -7,7 +7,7 @@ from django.core import serializers
 
 
 def cargar_csv(request):
-    # Cargar todos los registros
+    # Si a la petición GET se añade el parámetro 'all' a true se cargará el fichero con todos los registros
     if request.GET.get('all', False) == 'true':
         path = 'directorio-de-bibliotecas-valencianas_2020.csv'
     # Cargar únicamente los de la demo
