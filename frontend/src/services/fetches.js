@@ -9,7 +9,7 @@ async function deleteCentros() {
     redirect: "follow",
   };
   const respuesta = await fetch(
-    "http://localhost:8000/core/borrar_bdd/",
+    "http://172.23.182.233:8000/core/borrar_bdd/",
     requestOptions
   );
   return respuesta;
@@ -22,7 +22,7 @@ async function getAllCentros() {
     redirect: "follow",
   };
   const respuesta = await fetch(
-    "http://localhost:8000/core/carga_parametrizada/?c=true&p=true&b=true",
+    "http://172.23.182.233:8000/core/carga_parametrizada/?c=true&p=true&b=true",
     requestOptions
   );
 
@@ -37,7 +37,7 @@ async function gettCVCentros() {
   };
 
   const respuesta = await fetch(
-    "http://localhost:8000/core/carga_parametrizada/?c=true",
+    "http://172.23.182.233:8000/core/carga_parametrizada/?c=true",
     requestOptions
   );
 
@@ -51,7 +51,7 @@ async function getIBCentros() {
     redirect: "follow",
   };
   const respuesta = await fetch(
-    "http://localhost:8000/core/carga_parametrizada/?b=true",
+    "http://172.23.182.233:8000/core/carga_parametrizada/?b=true",
     requestOptions
   );
   return respuesta;
@@ -64,7 +64,7 @@ async function getECentros() {
     redirect: "follow",
   };
   const respuesta = await fetch(
-    "http://localhost:8000/core/carga_parametrizada/?p=true",
+    "http://172.23.182.233:8000/core/carga_parametrizada/?p=true",
     requestOptions
   );
   return respuesta;
@@ -78,7 +78,7 @@ async function getCVECentros() {
   };
 
   const respuesta = await fetch(
-    "http://localhost:8000/core/carga_parametrizada/?c=true&p=true",
+    "http://172.23.182.233:8000/core/carga_parametrizada/?c=true&p=true",
     requestOptions
   );
   return respuesta;
@@ -91,7 +91,7 @@ async function getIBCVCentros() {
     redirect: "follow",
   };
   const respuesta = await fetch(
-    "http://localhost:8000/core/carga_parametrizada/?c=true&b=true",
+    "http://172.23.182.233:8000/core/carga_parametrizada/?c=true&b=true",
     requestOptions
   );
   return respuesta;
@@ -105,7 +105,7 @@ async function getIBECentros() {
   };
 
   const respuesta = await fetch(
-    "http://localhost:8000/core/carga_parametrizada/?p=true&b=true",
+    "http://172.23.182.233:8000/core/carga_parametrizada/?p=true&b=true",
     requestOptions
   );
 
@@ -120,7 +120,7 @@ async function getCentrosByParams(datos) {
   };
 
   return await fetch(
-    "http://localhost:8000/core/busqueda?localidad=" +
+    "http://172.23.182.233:8000/core/busqueda?localidad=" +
       datos.localidad +
       "&cod_postal=" +
       datos.cod_postal +
