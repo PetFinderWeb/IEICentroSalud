@@ -100,6 +100,7 @@ function FilterForm() {
                 type="button"
                 onClick={() => {
                   refForm.current.reset();
+                  setCentros([]);
                 }}
               >
                 Cancelar
