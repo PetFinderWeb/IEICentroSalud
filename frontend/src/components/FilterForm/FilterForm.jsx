@@ -135,6 +135,16 @@ function FilterForm() {
 
         </div>
       </div>
+      <div className="contenedor-datos">
+            {centros.map((centro, index) => (
+              <div key={index} className="datos">
+                <p>{centro.fields.nombre}</p>
+                <p>{centro.fields.telefono}</p>
+                <p>{centro.fields.direccion}</p>
+                <p>{centro.fields.codigo_postal}</p>
+              </div>
+            ))}
+      </div>
     </div>
   );
 }
