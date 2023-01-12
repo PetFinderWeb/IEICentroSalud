@@ -101,6 +101,12 @@ function FilterForm() {
                 onClick={() => {
                   refForm.current.reset();
                   setCentros([]);
+                  setDatos({
+                    localidad: "",
+                    cod_postal: "",
+                    provincia: "",
+                    tipo: "T",
+                  });
                 }}
               >
                 Cancelar
